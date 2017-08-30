@@ -9,7 +9,7 @@ import com.tendcloud.tenddata.TCAgent;
  * Created by Mikiller on 2017/6/6.
  */
 
-public class IditorApplication extends Application {
+public class MyApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();

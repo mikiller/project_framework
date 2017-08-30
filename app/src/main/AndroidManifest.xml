@@ -3,12 +3,12 @@
     package="com.smg.mkframe">
 
     <application
-        android:name="com.smg.mkframe.base.IditorApplication"
+        android:name="com.smg.mkframe.base.MyApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:supportsRtl="true"
-        android:theme="@style/IditorTheme">
+        android:theme="@style/MyTheme">
         <activity android:name="com.smg.mkframe.activities.WelcomeActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
