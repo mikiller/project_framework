@@ -2,7 +2,7 @@ apply plugin: 'com.android.library'
 
 android {
     compileSdkVersion 25
-    buildToolsVersion '25.0.2'
+    buildToolsVersion '26.0.2'
 
 //    applicationId "com.uilib.spannableeditbox"
     defaultConfig {
@@ -34,9 +34,9 @@ dependencies {
     testCompile 'junit:junit:4.12'
     compile(name: 'richeditor', ext: 'aar')
     //compile(name: 'mkglidelib', ext: 'aar')
-    compile 'com.android.support:appcompat-v7:25.+'
-    compile 'com.android.support:design:25.+'
-    compile 'com.android.support:recyclerview-v7:25.+'
+    compile 'com.android.support:appcompat-v7:25.3.1'
+    compile 'com.android.support:design:25.3.1'
+    compile 'com.android.support:recyclerview-v7:25.3.1'
     compile 'com.lsjwzh:materialloadingprogressbar:0.5.8-RELEASE'
     compile 'com.googlecode.mp4parser:isoparser:1.1.22'
     compile project(':mkglidelib')
