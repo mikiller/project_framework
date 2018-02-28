@@ -29,7 +29,6 @@ public class GalleryTabGroup extends RelativeLayout {
     private ArrayList<String> tabNames;
     private int screenWidth, lastId = 0;
 
-    private LoaderManager mLoaderManager;
     private GalleryTabListener tabListener;
 
     public GalleryTabGroup(Context context) {
@@ -59,7 +58,6 @@ public class GalleryTabGroup extends RelativeLayout {
             }
         });
         tabLine = findViewById(R.id.view_tabline);
-        mLoaderManager = ((FragmentActivity) context).getSupportLoaderManager();
     }
 
     public void setTabNames(GalleryTabListener listener, String... names){
@@ -69,6 +67,10 @@ public class GalleryTabGroup extends RelativeLayout {
         tabNames = new ArrayList<>();
         rdg_tab.removeAllViews();
         addTabToGroup(listener, lastId, names);
+    }
+
+    public void setTabNames(String...names){
+        setTabNames(null, names);
     }
 
     public void addTabNames(GalleryTabListener listener, String... names){
@@ -94,17 +96,17 @@ public class GalleryTabGroup extends RelativeLayout {
         lp.width = screenWidth / count;
         lp.leftMargin = screenWidth / count * rdg_tab.getCheckedRadioButtonId();
         tabLine.setLayoutParams(lp);
-        rdg_tab.check(lastId = id - 1);
+        if(listener != null)
+            rdg_tab.check(lastId = id - 1);
+        setTabListener(listener);
+    }
+
+    public void setTabListener(GalleryTabListener listener){
         tabListener = listener;
     }
 
     public void setTabName(int id, String name){
         ((RadioButton)rdg_tab.findViewById(id)).setText(name);
-    }
-
-    public void initLoaderManager(LoaderManager.LoaderCallbacks<Cursor> callback){
-        if(mLoaderManager != null)
-            mLoaderManager.restartLoader(1, null, callback);
     }
 
     public void updateTab(int itemCount){
@@ -135,9 +137,4 @@ public class GalleryTabGroup extends RelativeLayout {
         marginAnim.start();
     }
 
-    @Override
-    protected void onDetachedFromWindow() {
-        mLoaderManager.destroyLoader(1);
-        super.onDetachedFromWindow();
-    }
 }

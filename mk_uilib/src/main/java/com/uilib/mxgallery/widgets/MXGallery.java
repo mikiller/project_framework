@@ -13,6 +13,7 @@ import android.support.v4.content.Loader;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.widget.RelativeLayout;
 
@@ -25,6 +26,7 @@ import com.uilib.mxgallery.defaultloaders.MediaLoader;
 import com.uilib.mxgallery.listeners.GalleryTabListener;
 import com.uilib.mxgallery.listeners.OnBottomBtnClickListener;
 import com.uilib.mxgallery.listeners.OnMediaItemClickListener;
+import com.uilib.mxgallery.utils.GalleryUtils;
 
 import java.io.File;
 import java.util.List;
@@ -49,8 +51,10 @@ public class MXGallery extends RelativeLayout implements LoaderManager.LoaderCal
     private Loader<Cursor> contentLoader;
 
     private int mimeType = 0;
-    private int columnNum = 4, itemMargin = 8, maxSelectionCount = 9;
+    private int columnNum = 4, maxSelectionCount = 9;
+    private float itemMargin = 8;
     private boolean needEdge = true, isMultiple = true, needCapture = false;
+    private String bucketId = null;
 
     public MXGallery(Context context) {
         super(context);
@@ -75,11 +79,12 @@ public class MXGallery extends RelativeLayout implements LoaderManager.LoaderCal
         if (attrs != null) {
             TypedArray ta = context.obtainStyledAttributes(attrs, R.styleable.MXGallery);
             columnNum = ta.getInt(R.styleable.MXGallery_columnNum, 4);
-            itemMargin = ta.getInt(R.styleable.MXGallery_itemMargin, 8);
+            itemMargin = ta.getDimension(R.styleable.MXGallery_itemMargin, 16);
             maxSelectionCount = ta.getInt(R.styleable.MXGallery_maxSltCount, 9);
             needEdge = ta.getBoolean(R.styleable.MXGallery_needEdge, true);
             isMultiple = ta.getBoolean(R.styleable.MXGallery_isMultiple, true);
             needCapture = ta.getBoolean(R.styleable.MXGallery_needCapture, false);
+            tabGroup.setVisibility(ta.getBoolean(R.styleable.MXGallery_needTab, true) ? VISIBLE : GONE);
             ta.recycle();
         }
         rcv_gallery.setLayoutManager(new GridLayoutManager(getContext(), columnNum));
@@ -95,6 +100,7 @@ public class MXGallery extends RelativeLayout implements LoaderManager.LoaderCal
         else
             mediaCollection = new MediaCollection(isMultiple, maxSelectionCount);
         itemsAdapter = new GalleryItemsAdapter(getContext(), mediaCollection, columnNum, itemMargin);
+        itemsAdapter.setNeedFirstItem(true);
         itemsAdapter.setItemClickeListener(new OnMediaItemClickListener() {
             @Override
             public void onItemChecked(ItemModel item, boolean isChecked) {
@@ -103,11 +109,6 @@ public class MXGallery extends RelativeLayout implements LoaderManager.LoaderCal
                 else
                     unCheckItem(item);
                 updateCollectionNum(mediaCollection.getSelectedCount());
-            }
-
-            @Override
-            public void onItemClicked(final ItemModel item, boolean isCheck) {
-                openPreviewPage(item, isCheck);
             }
         });
         rcv_gallery.setAdapter(itemsAdapter);
@@ -226,7 +227,7 @@ public class MXGallery extends RelativeLayout implements LoaderManager.LoaderCal
 
     public void updateItems(boolean isNeedShowSelected) {
         mediaCollection.isNeedShowSelected = isNeedShowSelected;
-        tabGroup.initLoaderManager(this);
+        GalleryUtils.initLoaderManager(getContext(), MediaLoader.LOADER_ID, this);
     }
 
     public int getSelectedItemCount() {
@@ -237,11 +238,18 @@ public class MXGallery extends RelativeLayout implements LoaderManager.LoaderCal
         return fgmtMgr == null ? true : !(fgmtMgr.getFragments().size() > 0);
     }
 
+    public void setBucketId(String id){
+        bucketId = id;
+        contentLoader = null;
+        GalleryUtils.destoryLoaderManager(MediaLoader.LOADER_ID);
+        GalleryUtils.initLoaderManager(getContext(), MediaLoader.LOADER_ID, this);
+    }
+
     @Override
     protected void onSizeChanged(int w, int h, int oldw, int oldh) {
         super.onSizeChanged(w, h, oldw, oldh);
 
-        tabGroup.initLoaderManager(this);
+        GalleryUtils.initLoaderManager(getContext(), MediaLoader.LOADER_ID, this);
     }
 
     @Override
@@ -251,10 +259,12 @@ public class MXGallery extends RelativeLayout implements LoaderManager.LoaderCal
             type = MediaStore.Files.FileColumns.MEDIA_TYPE_IMAGE;
         else if (MimeType.isVideo(mimeType))
             type = MediaStore.Files.FileColumns.MEDIA_TYPE_VIDEO;
-        return contentLoader == null ? MediaLoader.newInstance(getContext(),
-                type,
-                needCapture,
-                mediaCollection.isNeedShowSelected ? null : mediaCollection.getSelectedModelPath()) : contentLoader;
+        if(contentLoader == null)
+            contentLoader = MediaLoader.newInstance(getContext(),
+                    type,
+                    needCapture,
+                    mediaCollection.isNeedShowSelected ? null : mediaCollection.getSelectedModelPath(), bucketId);
+        return contentLoader;
     }
 
     @Override
@@ -269,4 +279,10 @@ public class MXGallery extends RelativeLayout implements LoaderManager.LoaderCal
     public void onLoaderReset(Loader<Cursor> loader) {
         itemsAdapter.swapCursor(null);
     }
+
+//    @Override
+//    protected void onDetachedFromWindow() {
+//        super.onDetachedFromWindow();
+//        GalleryUtils.destoryLoaderManager(1);
+//    }
 }

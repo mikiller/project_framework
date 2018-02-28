@@ -18,8 +18,11 @@
         android:layout_below="@+id/tabGroup"
         android:clipChildren="false"
         android:clipToPadding="false"
+        android:padding="10dp"
         android:paddingBottom="4dp"
-        android:paddingTop="4dp" />
+        android:paddingTop="4dp"
+        android:paddingLeft="9dp"
+        android:paddingRight="9dp" />
 
     <com.uilib.mxgallery.widgets.BottomBar
         android:id="@+id/bottomBar"

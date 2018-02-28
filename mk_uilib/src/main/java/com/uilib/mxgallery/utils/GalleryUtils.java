@@ -6,7 +6,10 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.os.Build;
 import android.provider.MediaStore;
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.LoaderManager;
 import android.support.v4.content.FileProvider;
+import android.support.v4.content.Loader;
 import android.webkit.MimeTypeMap;
 
 import java.io.File;
@@ -18,6 +21,8 @@ import java.io.File;
 public class GalleryUtils {
 
     private static final String SCHEME_CONTENT = "content";
+
+    private static LoaderManager mLoaderManager;
 
     public static String getPath(ContentResolver resolver, Uri uri) {
         if (uri == null) {
@@ -48,5 +53,19 @@ public class GalleryUtils {
 
     public String getFileMimeType(String path){
         return MimeTypeMap.getSingleton().getMimeTypeFromExtension(MimeTypeMap.getFileExtensionFromUrl(path.trim()));
+    }
+
+    public static void initLoaderManager(Context context, int id, LoaderManager.LoaderCallbacks<Cursor> callback){
+        if(mLoaderManager == null)
+            mLoaderManager = ((FragmentActivity) context).getSupportLoaderManager();
+        mLoaderManager.restartLoader(id, null, callback);
+    }
+
+    public static void destoryLoaderManager(int... ids){
+        if(mLoaderManager != null) {
+            for(int id : ids)
+                mLoaderManager.destroyLoader(id);
+            mLoaderManager = null;
+        }
     }
 }

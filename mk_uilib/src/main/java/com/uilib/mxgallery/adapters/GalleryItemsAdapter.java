@@ -3,8 +3,10 @@ package com.uilib.mxgallery.adapters;
 import android.app.Activity;
 import android.content.Context;
 import android.database.Cursor;
+import android.graphics.ImageFormat;
 import android.os.Build;
 import android.provider.MediaStore;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.text.format.DateUtils;
 import android.util.Log;
@@ -22,9 +24,11 @@ import android.widget.TextView;
 import com.mikiller.mkglidelib.imageloader.GlideImageLoader;
 import com.uilib.mxgallery.models.ItemModel;
 import com.uilib.mxgallery.models.MimeType;
+import com.uilib.mxgallery.utils.CameraGalleryUtils;
 import com.uilib.mxgallery.widgets.MediaCollection;
 import com.uilib.R;
 import com.uilib.mxgallery.listeners.OnMediaItemClickListener;
+import com.uilib.utils.DisplayUtil;
 
 import java.io.File;
 import java.net.URI;
@@ -39,12 +43,17 @@ public class GalleryItemsAdapter extends RecyclerViewCursorAdapter<GalleryItemsA
     private int itemSize;
     private OnMediaItemClickListener listnener;
     private MediaCollection mediaCollection;
+    private boolean needCkb = true;
 
-    public GalleryItemsAdapter(Context context, MediaCollection mediaCollection, int itemCount, int margin) {
+    public GalleryItemsAdapter(Context context, MediaCollection mediaCollection, int itemCount, float margin) {
         super(null);
         mContext = context;
         this.mediaCollection = mediaCollection;
-        itemSize = (context.getResources().getDisplayMetrics().widthPixels - (itemCount+1) * margin) / 4;
+        itemSize = (int) ((context.getResources().getDisplayMetrics().widthPixels - (itemCount+1) * margin) / itemCount);
+    }
+
+    public void setNeedCkb(boolean isNeed){
+        needCkb = isNeed;
     }
 
     public void setItemClickeListener(OnMediaItemClickListener listnener){
@@ -59,25 +68,48 @@ public class GalleryItemsAdapter extends RecyclerViewCursorAdapter<GalleryItemsA
 
     @Override
     protected void onBindViewHolder(MediaViewHolder holder, final Cursor cursor) {
-        ItemModel model = ItemModel.valueOf(cursor);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            GlideImageLoader.getInstance().loadLocalImage(mContext, model.getContentUri(), R.mipmap.placeholder, new Size(itemSize, itemSize), holder.iv_img);
-        }else{
-            GlideImageLoader.getInstance().loadLocalImage(mContext, model.getContentUri(), new int[]{itemSize, itemSize}, R.mipmap.placeholder, holder.iv_img);
-        }
-        holder.tv_time.setText(DateUtils.formatElapsedTime(model.duration / 1000));
-        RelativeLayout.LayoutParams lp = (RelativeLayout.LayoutParams) holder.ckb_isCheck.getLayoutParams();
-        lp.height = lp.width = itemSize / 3;
-        holder.ckb_isCheck.setLayoutParams(lp);
-        holder.setMediaType(MimeType.isPic(model.mimeType));
-        setItemStatus(holder, model);
+        if(needFirstItem && holder.getAdapterPosition() == 0){
+            RelativeLayout.LayoutParams lp = (RelativeLayout.LayoutParams) holder.ll_camera.getLayoutParams();
+            lp.width = itemSize;
+            holder.ll_camera.setLayoutParams(lp);
+            holder.ll_camera.setVisibility(View.VISIBLE);
+            holder.ll_camera.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    CameraGalleryUtils.getInstance(mContext).openSysCamera();
+                }
+            });
+//            holder.rl_img.setVisibility(View.GONE);
+            holder.cv_img.setVisibility(View.GONE);
+        }else {
+            holder.ll_camera.setVisibility(View.GONE);
+//            holder.rl_img.setVisibility(View.VISIBLE);
+            holder.cv_img.setVisibility(View.VISIBLE);
+            RelativeLayout.LayoutParams lp = (RelativeLayout.LayoutParams) holder.cv_img.getLayoutParams();
+            lp.width = itemSize;
+            holder.cv_img.setLayoutParams(lp);
+            ItemModel model = ItemModel.valueOf(cursor);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                GlideImageLoader.getInstance().loadLocalImage(mContext, model.getContentUri(), R.mipmap.placeholder, new Size(itemSize, itemSize), holder.iv_img);
+            } else {
+                GlideImageLoader.getInstance().loadLocalImage(mContext, model.getContentUri(), new int[]{itemSize, itemSize}, R.mipmap.placeholder, holder.iv_img);
+            }
 
+            holder.tv_time.setText(DateUtils.formatElapsedTime(model.duration / 1000));
+//        int pdleft = DisplayUtil.px2dip(mContext, itemSize / 2), pdTop = DisplayUtil.dip2px(mContext, 5);
+//        holder.ckb_isCheck.setPadding(pdleft, pdTop, pdTop, pdleft);
+            holder.setMediaType(MimeType.isPic(model.mimeType));
+            setItemStatus(holder, model);
+        }
     }
 
     private void setItemStatus(final GalleryItemsAdapter.MediaViewHolder holder, final ItemModel model){
-        holder.ckb_isCheck.setEnabled(mediaCollection == null ? true : mediaCollection.canSelectModel(model));
-        holder.ckb_isCheck.setOnCheckedChangeListener(null);
-        holder.ckb_isCheck.setChecked(mediaCollection == null ? false : mediaCollection.isContainMedia(model));
+        if(needCkb) {
+            holder.ckb_isCheck.setEnabled(mediaCollection == null ? true : mediaCollection.canSelectModel(model));
+            holder.ckb_isCheck.setOnCheckedChangeListener(null);
+            holder.ckb_isCheck.setChecked(mediaCollection == null ? false : mediaCollection.isContainMedia(model));
+        }else
+            holder.ckb_isCheck.setVisibility(View.GONE);
         if(listnener != null){
             holder.ckb_isCheck.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                 @Override
@@ -89,7 +121,8 @@ public class GalleryItemsAdapter extends RecyclerViewCursorAdapter<GalleryItemsA
             holder.iv_img.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    listnener.onItemClicked(model, holder.ckb_isCheck.isChecked());
+                    //listnener.onItemClicked(model, holder.ckb_isCheck.isChecked());
+                    holder.ckb_isCheck.setChecked(!holder.ckb_isCheck.isChecked());
                 }
             });
         }
@@ -102,6 +135,9 @@ public class GalleryItemsAdapter extends RecyclerViewCursorAdapter<GalleryItemsA
     }
 
     public static class MediaViewHolder extends RecyclerView.ViewHolder{
+        private LinearLayout ll_camera;
+//        private RelativeLayout rl_img;
+        private CardView cv_img;
         private ImageView iv_img;
         private CheckBox ckb_isCheck;
         private LinearLayout ll_time;
@@ -109,6 +145,9 @@ public class GalleryItemsAdapter extends RecyclerViewCursorAdapter<GalleryItemsA
 
         public MediaViewHolder(View itemView) {
             super(itemView);
+            ll_camera = (LinearLayout) itemView.findViewById(R.id.ll_camera);
+//            rl_img = (RelativeLayout) itemView.findViewById(R.id.rl_img);
+            cv_img = (CardView) itemView.findViewById(R.id.cv_img);
             iv_img = (ImageView) itemView.findViewById(R.id.iv_img);
             iv_img.setAdjustViewBounds(true);
             ckb_isCheck = (CheckBox) itemView.findViewById(R.id.ckb_isCheck);

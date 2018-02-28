@@ -46,4 +46,44 @@
         <item name="android:padding">10dp</item>
         <item name="android:button">@null</item>
     </style>
+
+    <style name="CustomDialog" parent="@android:style/Theme.Dialog">
+        <item name="android:background">@android:color/transparent</item>
+        <item name="android:windowIsTranslucent">true</item>
+        <!-- 背景颜色及透明程度 -->
+        <item name="android:windowBackground">@color/mask</item>
+        <!-- 是否有标题 -->
+        <item name="android:windowNoTitle">true</item>
+        <!-- 是否浮现在activity之上 -->
+        <item name="android:windowIsFloating">false</item>
+        <!-- 是否模糊 -->
+        <item name="android:backgroundDimEnabled">true</item>
+        <item name="android:windowFrame">@null</item>
+        <item name="android:windowFullscreen">true</item>
+    </style>
+
+    <style name="sliptline">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">1dp</item>
+        <item name="android:background">@color/tagBgGray</item>
+    </style>
+
+    <style name="nomal_text_style">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:textColor">@android:color/black</item>
+    </style>
+
+    <style name="hint_text_style">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:textColor">@color/discovery_kind_unchecked</item>
+    </style>
+
+    <style name="dlg_anim">
+        <item name="android:windowEnterAnimation">@anim/dlg_enter</item>
+        <item name="android:windowExitAnimation">@anim/dlg_exit</item>
+    </style>
 </resources>

@@ -235,17 +235,36 @@
     <declare-styleable name="MXGallery">
         <attr name="needEdge" format="boolean" />
         <attr name="columnNum" format="integer" />
-        <attr name="itemMargin" format="integer" />
+        <attr name="itemMargin" format="dimension" />
         <attr name="maxSltCount" format="integer|enum" >
             <enum name="ALL" value="-1" />
         </attr>
         <attr name="isMultiple" format="boolean" />
         <attr name="needCapture" format="boolean" />
+        <attr name="needTab" format="boolean" />
     </declare-styleable>
 
     <declare-styleable name="BottomBar">
         <attr name="leftTxt" format="string|reference" />
         <attr name="rightTxt" format="string|reference" />
         <attr name="needNum" format="boolean" />
+    </declare-styleable>
+
+    <declare-styleable name="MyMenuItem">
+        <attr name="menuIcon" format="reference"/>
+        <attr name="menuTitle" format="reference|string" />
+        <attr name="needLine" format="boolean" />
+        <attr name="bgColor" format="reference|color" />
+        <attr name="needSubText" format="boolean" />
+        <attr name="needNext" format="boolean" />
+    </declare-styleable>
+
+    <declare-styleable name="MXCircleProgressBar">
+        <attr name="startPos" format="integer" />
+        <attr name="endPos" format="integer" />
+        <attr name="backPgsColor" format="color|reference" />
+        <attr name="frontPgsColor" format="color|reference" />
+        <attr name="txtPgsColor" format="color|reference" />
+        <attr name="borderWidth" format="dimension" />
     </declare-styleable>
 </resources>
