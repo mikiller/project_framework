@@ -72,40 +72,22 @@ public class PreviewFragment extends Fragment {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        final ArrayList<ItemModel> models = new ArrayList<>();
-        isSelected = getArguments().getBoolean(ISSELECTED);
-        if(!isSelected) {
-            models.add((ItemModel) getArguments().getParcelable(MODEL));
-        }else{
-            models.addAll((ArrayList)(getArguments().getParcelableArrayList(MODELS)));
-        }
         vp_preview = (ViewPager) view.findViewById(R.id.vp_preview);
         bottomBar = (BottomBar) view.findViewById(R.id.bottomBar);
-        adapter = new PreviewPagerAdapter(getContext(), models);
-        vp_preview.setAdapter(adapter);
-        vp_preview.setCurrentItem(getArguments().getInt(POS));
-        vp_preview.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
-            @Override
-            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+        isSelected = getArguments().getBoolean(ISSELECTED);
+        final ArrayList<ItemModel> models = new ArrayList<>();
 
-            }
-
-            @Override
-            public void onPageSelected(int position) {
-                adapter.onPageSelected(position);
-            }
-
-            @Override
-            public void onPageScrollStateChanged(int state) {
-
-            }
-        });
+        if(!isSelected) {
+            //预览未选中素材，单个预览
+            models.add((ItemModel) getArguments().getParcelable(MODEL));
+            bottomBar.setRightText("选择");
+        }else{
+            //预览选种素材，预览整个集合
+            models.addAll((ArrayList)(getArguments().getParcelableArrayList(MODELS)));
+            bottomBar.updateNum(models.size());
+        }
         bottomBar.updateBtnState(true);
         bottomBar.needNum(isSelected);
-        if(isSelected)
-            bottomBar.updateNum(models.size());
-        else
-            bottomBar.setRightText("选择");
         bottomBar.setBtnListener(new OnBottomBtnClickListener() {
             @Override
             public void onLeftClick() {
@@ -126,6 +108,26 @@ public class PreviewFragment extends Fragment {
                 getActivity().getSupportFragmentManager().beginTransaction().remove(PreviewFragment.this).commit();
             }
         });
+        adapter = new PreviewPagerAdapter(getContext(), models);
+        vp_preview.setAdapter(adapter);
+        vp_preview.setCurrentItem(getArguments().getInt(POS));
+        vp_preview.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+                adapter.onPageSelected(position);
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
+            }
+        });
+
     }
 
     @Override

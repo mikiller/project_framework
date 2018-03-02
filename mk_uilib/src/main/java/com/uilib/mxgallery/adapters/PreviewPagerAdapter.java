@@ -16,6 +16,7 @@
 package com.uilib.mxgallery.adapters;
 
 import android.content.Context;
+import android.graphics.PorterDuff;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.support.v4.view.PagerAdapter;
@@ -24,9 +25,9 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.FrameLayout;
-import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.VideoView;
 
@@ -118,58 +119,69 @@ public class PreviewPagerAdapter extends PagerAdapter {
 
     private class PageHolder{
         private ImageView iv_preview;
-        private FrameLayout fl_vieoPreview;
+        private RelativeLayout rl_vieoPreview;
         private VideoView viewVideo;
-        private ImageButton btn_start;
+        private ImageView btn_start;
         private TextView tv_time;
+        private ProgressBar pgs;
+        private MediaPlayer mediaPlayer;
+        private int state = -1;
 //        private Timer timer;
         public PageHolder(View page) {
             iv_preview = (ImageView) page.findViewById(R.id.iv_preview);
-            fl_vieoPreview = (FrameLayout) page.findViewById(R.id.fl_vieoPreview);
+            rl_vieoPreview = (RelativeLayout) page.findViewById(R.id.rl_vieoPreview);
             viewVideo = (VideoView) page.findViewById(R.id.viewVideo);
-            btn_start = (ImageButton) page.findViewById(R.id.btn_start);
+            btn_start = (ImageView) page.findViewById(R.id.btn_start);
             tv_time = (TextView) page.findViewById(R.id.tv_time);
+            pgs = (ProgressBar) page.findViewById(R.id.pgs);
         }
 
         public void setMineType(boolean isPic){
             iv_preview.setVisibility(isPic ? View.VISIBLE : View.GONE);
-            fl_vieoPreview.setVisibility(isPic ? View.GONE : View.VISIBLE);
+            rl_vieoPreview.setVisibility(isPic ? View.GONE : View.VISIBLE);
         }
 
         public void setImgPreview(Uri uri){
             GlideImageLoader.getInstance().loadLocalImage(mContext, uri, R.mipmap.placeholder, iv_preview);
         }
 
-        public void setVideoPreview(ItemModel item){
+        public void setVideoPreview(final ItemModel item){
             viewVideo.setVideoPath(item.getPath());
             viewVideo.seekTo(1);
             viewVideo.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
                 @Override
                 public void onCompletion(MediaPlayer mp) {
-                    timer.cancel();
-                    timer = null;
-                    viewVideo.seekTo(1);
-                    btn_start.setVisibility(View.VISIBLE);
+                    stopVideo();
+//                    btn_start.setVisibility(View.VISIBLE);
                 }
             });
-            tv_time.setText(DateUtils.formatElapsedTime(item.duration / 1000));
+
+            viewVideo.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
+                @Override
+                public void onPrepared(MediaPlayer mp) {
+                    mediaPlayer = mp;
+                    pgs.setMax(mp.getDuration()/1000);
+                    tv_time.setText(DateUtils.formatElapsedTime(mp.getDuration()/1000));
+                }
+            });
 
             btn_start.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if(!viewVideo.isPlaying()){
-                        lastHolder = PageHolder.this;
-                        viewVideo.seekTo(0);
+                    if(state == -1){
+                        //停止状态
+                        //重新播放
+                        startVideo();
+                    }else if(state == 1){
+                        //播放状态
+                        //暂停播放
+                        viewVideo.pause();
+                        state = 0;
+                    }else if(state == 0){
+                        //暂停状态
+                        //继续播放
                         viewVideo.start();
-                        v.setVisibility(View.GONE);
-                        timer = new Timer();
-                        timer.schedule(new TimerTask() {
-                            long time = 0;
-                            @Override
-                            public void run() {
-                                updateTime(time++);
-                            }
-                        }, 0, 1000);
+                        state = 1;
                     }
 
                 }
@@ -183,20 +195,39 @@ public class PreviewPagerAdapter extends PagerAdapter {
                 @Override
                 public void run() {
                     tv_time.setText(DateUtils.formatElapsedTime(time));
+                    pgs.setProgress((int) time);
                 }
             });
+        }
+
+        public void startVideo(){
+            lastHolder = PageHolder.this;
+            viewVideo.seekTo(0);
+            viewVideo.resume();
+            viewVideo.start();
+            state = 1;
+            timer = new Timer();
+            timer.schedule(new TimerTask() {
+                long time = 0;
+                @Override
+                public void run() {
+                    if(state == 1)
+                        updateTime(time++);
+                }
+            }, 0, 1000);
+
         }
 
         public void stopVideo(){
             if(timer != null){
                 viewVideo.stopPlayback();
-                viewVideo.destroyDrawingCache();
                 viewVideo.seekTo(1);
-                btn_start.setVisibility(View.VISIBLE);
                 if(timer != null) {
                     timer.cancel();
                     timer = null;
                 }
+                pgs.setProgress(0);
+                state = -1;
                 Log.e(this.getClass().getSimpleName(), "stop video");
             }
         }

@@ -128,7 +128,7 @@ public class GalleryMediaUtils {
     }
 
     public Uri getFileUri(File file) {
-        return (Build.VERSION.SDK_INT < Build.VERSION_CODES.N) ? Uri.fromFile(file) : FileProvider.getUriForFile(mContext, mContext.getPackageName().concat(".fileprovider"), file);
+        return (Build.VERSION.SDK_INT < Build.VERSION_CODES.N) ? Uri.fromFile(file) : FileProvider.getUriForFile(mContext, mContext.getPackageName().concat(".file_provider"), file);
     }
 
     public String getFileMimeType(String path) {
