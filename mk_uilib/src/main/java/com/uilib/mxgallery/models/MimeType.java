@@ -20,7 +20,7 @@ import android.content.ContentResolver;
 import android.net.Uri;
 import android.webkit.MimeTypeMap;
 
-import com.uilib.mxgallery.utils.GalleryUtils;
+import com.uilib.mxgallery.utils.GalleryLoaderUtils;
 
 import java.util.EnumSet;
 import java.util.HashSet;
@@ -260,7 +260,7 @@ public enum MimeType {
             if (extension.equals(type)) {
                 return true;
             }
-            String path = GalleryUtils.getPath(resolver, uri);
+            String path = GalleryLoaderUtils.getPath(resolver, uri);
             if (path != null && path.toLowerCase(Locale.US).endsWith(extension)) {
                 return true;
             }

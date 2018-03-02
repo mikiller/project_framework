@@ -6,6 +6,7 @@ import android.database.Cursor;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.LoaderManager;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.animation.AccelerateDecelerateInterpolator;
@@ -26,7 +27,6 @@ public class GalleryTabGroup extends RelativeLayout {
     private RadioGroup rdg_tab;
     private View tabLine;
 
-    private ArrayList<String> tabNames;
     private int screenWidth, lastId = 0;
 
     private GalleryTabListener tabListener;
@@ -64,7 +64,6 @@ public class GalleryTabGroup extends RelativeLayout {
         if(names == null || names.length == 0) {
             return;
         }
-        tabNames = new ArrayList<>();
         rdg_tab.removeAllViews();
         addTabToGroup(listener, lastId, names);
     }
@@ -81,24 +80,36 @@ public class GalleryTabGroup extends RelativeLayout {
 
     private void addTabToGroup(GalleryTabListener listener, int id, String... names){
         for(String name : names){
-            tabNames.add(name);
-            RadioButton rdbTab = (RadioButton) LayoutInflater.from(getContext()).inflate(R.layout.layout_tab, null);
-            RadioGroup.LayoutParams lp = new RadioGroup.LayoutParams(0, RadioGroup.LayoutParams.WRAP_CONTENT);
-            lp.weight = 1;
-            rdbTab.setLayoutParams(lp);
-            rdbTab.setText(name);
-            rdbTab.setId(id++);
-            rdg_tab.addView(rdbTab);
+            rdg_tab.addView(createTab(id++, name));
         }
+        resetTabLineLayoutParam();
+        checkTab(lastId = id - 1);
+        if(listener != null)
+            setTabListener(listener);
+
+    }
+
+    private RadioButton createTab(int id, String name){
+        RadioButton rdbTab = (RadioButton) LayoutInflater.from(getContext()).inflate(R.layout.layout_tab, null);
+        RadioGroup.LayoutParams lp = new RadioGroup.LayoutParams(0, RadioGroup.LayoutParams.WRAP_CONTENT);
+        lp.weight = 1;
+        rdbTab.setLayoutParams(lp);
+        rdbTab.setText(name);
+        rdbTab.setId(id);
+        return rdbTab;
+    }
+
+    private void resetTabLineLayoutParam(){
         RelativeLayout.LayoutParams lp = (LayoutParams) tabLine.getLayoutParams();
         screenWidth = getResources().getDisplayMetrics().widthPixels;
         int count = rdg_tab.getChildCount() == 0 ? 1 : rdg_tab.getChildCount();
         lp.width = screenWidth / count;
         lp.leftMargin = screenWidth / count * rdg_tab.getCheckedRadioButtonId();
         tabLine.setLayoutParams(lp);
-        if(listener != null)
-            rdg_tab.check(lastId = id - 1);
-        setTabListener(listener);
+    }
+
+    public void checkTab(int tab){
+        rdg_tab.check(tab);
     }
 
     public void setTabListener(GalleryTabListener listener){
@@ -109,13 +120,9 @@ public class GalleryTabGroup extends RelativeLayout {
         ((RadioButton)rdg_tab.findViewById(id)).setText(name);
     }
 
-    public void updateTab(int itemCount){
+    public void updateTab(int selectedCount){
         if(tabListener != null)
-            tabListener.onTabUpdated(this, rdg_tab.getCheckedRadioButtonId(), itemCount);
-    }
-
-    public void checkTab(int tab){
-        rdg_tab.check(tab);
+            tabListener.onTabUpdated(this, rdg_tab.getCheckedRadioButtonId(), selectedCount);
     }
 
     @Override

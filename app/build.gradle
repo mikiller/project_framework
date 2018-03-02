@@ -1,10 +1,18 @@
 apply plugin: 'com.android.application'
 
 android {
+    signingConfigs {
+        debug {
+            keyAlias 'androiddebugkey'
+            keyPassword 'android'
+            storeFile file('C:/Users/Mikiller/.android/debug.keystore')
+            storePassword 'android'
+        }
+    }
     compileSdkVersion 25
     buildToolsVersion '26.0.2'
     defaultConfig {
-        applicationId "com.smg.iditor"
+        applicationId "com.smg.mkframe"
         minSdkVersion 14
         targetSdkVersion 25
         versionCode 1
@@ -18,6 +26,10 @@ android {
         }
     }
     productFlavors {
+    }
+
+    lintOptions{
+        abortOnError false
     }
 }
 

@@ -81,6 +81,10 @@ public class MediaCollection implements Parcelable {
         }
     }
 
+    public ItemModel getLastModel(){
+        return lastModel;
+    }
+
     public List<File> getModelFiles() {
         ArrayList<File> files = new ArrayList<>();
         for (ItemModel model : modelSet) {

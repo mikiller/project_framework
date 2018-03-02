@@ -48,7 +48,7 @@ public class MediaLoader extends CursorLoader {
              + " OR " + MediaStore.Files.FileColumns.MEDIA_TYPE + "=?)"
              + " AND " + MediaStore.MediaColumns.SIZE + ">0";
     public static String ORDER_BY = MediaStore.Files.FileColumns._ID + " DESC";
-    protected boolean mEnableCapture;
+//    protected boolean mEnableCapture;
 
     private static final String SELECTION_SINGLE = MediaStore.Files.FileColumns.MEDIA_TYPE + "=? AND "
             + MediaStore.MediaColumns.SIZE + ">0";
@@ -108,20 +108,19 @@ public class MediaLoader extends CursorLoader {
         return args;
     }
 
-    public static CursorLoader newInstance(Context context, int mediaType, boolean capture, ArrayList<String> paths, String bucketId){
+    public static CursorLoader newInstance(Context context, int mediaType, ArrayList<String> paths, String bucketId){
         return new MediaLoader(context,
                 QUERY_URI, PROJECTION,
                 SELECTION(mediaType, paths == null ? 0 : paths.size(), bucketId),
                 SELECTION_ARGS(mediaType, paths, bucketId),
-                ORDER_BY,
-                capture);
+                ORDER_BY);
     }
 
 
     private MediaLoader(Context context, Uri uri, String[] projection, String selection, String[] selectionArgs,
-                        String sortOrder, boolean capture) {
+                        String sortOrder) {
         super(context, uri, projection, selection, selectionArgs, sortOrder);
-        mEnableCapture = capture;
+//        mEnableCapture = capture;
     }
 
     public void changeContent(){

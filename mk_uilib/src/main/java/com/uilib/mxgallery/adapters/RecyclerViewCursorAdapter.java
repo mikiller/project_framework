@@ -40,7 +40,7 @@ public abstract class RecyclerViewCursorAdapter<VH extends RecyclerView.ViewHold
     @Override
     public void onBindViewHolder(VH holder, int position) {
         if(!needFirstItem)
-            checkCursor(position);
+            checkCursor(holder.getAdapterPosition());
 //        if (!isDataValid(mCursor)) {
 //            throw new IllegalStateException("Cannot bind view holder when cursor is in invalid state.");
 //        }
@@ -58,9 +58,11 @@ public abstract class RecyclerViewCursorAdapter<VH extends RecyclerView.ViewHold
 //            throw new IllegalStateException("Could not move cursor to position " + position
 //                    + " when trying to get item view type.");
 //        }
-        if(!needFirstItem || position != 0)
+        if(!needFirstItem || position != 0) {
             checkCursor(position);
-        return getItemViewType(position, mCursor);
+            return getItemViewType(position, mCursor);
+        }else
+            return getItemViewType(position, null);
     }
 
     protected abstract int getItemViewType(int position, Cursor cursor);

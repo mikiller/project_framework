@@ -68,13 +68,13 @@ public class BottomBar extends RelativeLayout {
         tv_right_num.setVisibility(isNeed ? VISIBLE : GONE);
     }
 
-    public void updateBtnState(boolean isLeft, boolean enabled){
-        if (isLeft)
+    public void updateBtnState(boolean enabled){
+
             tv_left.setEnabled(enabled);
-        else {
+
             tv_right.setEnabled(enabled);
             tv_right_num.setEnabled(enabled);
-        }
+
     }
 
     public void setBtnListener(final OnBottomBtnClickListener listener){

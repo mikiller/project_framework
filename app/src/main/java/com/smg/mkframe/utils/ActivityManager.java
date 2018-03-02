@@ -3,7 +3,7 @@ package com.smg.mkframe.utils;
 import android.app.Activity;
 import android.content.Intent;
 
-import com.smg.mkframe.base.SuperActivity;
+import com.smg.mkframe.base.BaseActivity;
 
 import java.io.Serializable;
 import java.util.Map;
@@ -13,10 +13,10 @@ import java.util.Map;
  */
 
 public class ActivityManager {
-    public static Class<? extends SuperActivity> currentActivity;
+    public static Class<? extends BaseActivity> currentActivity;
     public static Activity lastActivity;
 
-    public static void startActivity(Activity act, Class<? extends SuperActivity> act1){
+    public static void startActivity(Activity act, Class<? extends BaseActivity> act1){
         Intent intent = new Intent(act, act1);
         //act.getApplicationContext().startActivity(intent);
         act.startActivity(intent);
@@ -24,7 +24,7 @@ public class ActivityManager {
         currentActivity = act1;
     }
 
-    public static void startActivity(Activity act, Class<? extends SuperActivity> act1, Map<String, Object> args){
+    public static void startActivity(Activity act, Class<? extends BaseActivity> act1, Map<String, Object> args){
         Intent intent = new Intent(act, act1);
         if(args != null){
             for(String key : args.keySet()){
@@ -41,7 +41,7 @@ public class ActivityManager {
         currentActivity = act1;
     }
 
-    public static void startActivityforResult(Activity act, Class<? extends SuperActivity> act1, int requestCode, Map<String, Object> args){
+    public static void startActivityforResult(Activity act, Class<? extends BaseActivity> act1, int requestCode, Map<String, Object> args){
         Intent intent = new Intent(act, act1);
         if(args != null){
             for(String key : args.keySet()){

@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#00a8ff</color>
-    <color name="colorPrimaryDark">#303F9F</color>
-    <color name="colorAccent">#FF4081</color>
+    <color name="colorPrimary">#00befa</color>
+    <color name="colorPrimaryDark">@android:color/transparent</color>
+    <color name="colorPrimaryLight">#a0d2f5</color>
+    <color name="colorAccent">#519fff</color>
     <color name="edit_color">#000000</color>
     <color name="toolbarColor">#f0faff</color>
     <color name="mask">#b4333333</color>

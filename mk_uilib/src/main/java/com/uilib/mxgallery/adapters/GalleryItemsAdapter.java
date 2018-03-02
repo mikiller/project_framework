@@ -1,15 +1,11 @@
 package com.uilib.mxgallery.adapters;
 
-import android.app.Activity;
 import android.content.Context;
 import android.database.Cursor;
-import android.graphics.ImageFormat;
 import android.os.Build;
-import android.provider.MediaStore;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.text.format.DateUtils;
-import android.util.Log;
 import android.util.Size;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -24,14 +20,10 @@ import android.widget.TextView;
 import com.mikiller.mkglidelib.imageloader.GlideImageLoader;
 import com.uilib.mxgallery.models.ItemModel;
 import com.uilib.mxgallery.models.MimeType;
-import com.uilib.mxgallery.utils.CameraGalleryUtils;
+import com.uilib.mxgallery.utils.GalleryMediaUtils;
 import com.uilib.mxgallery.widgets.MediaCollection;
 import com.uilib.R;
 import com.uilib.mxgallery.listeners.OnMediaItemClickListener;
-import com.uilib.utils.DisplayUtil;
-
-import java.io.File;
-import java.net.URI;
 
 /**
  * Created by Mikiller on 2017/5/11.
@@ -45,11 +37,11 @@ public class GalleryItemsAdapter extends RecyclerViewCursorAdapter<GalleryItemsA
     private MediaCollection mediaCollection;
     private boolean needCkb = true;
 
-    public GalleryItemsAdapter(Context context, MediaCollection mediaCollection, int itemCount, float margin) {
+    public GalleryItemsAdapter(Context context, MediaCollection mediaCollection, int columnCount, float margin) {
         super(null);
         mContext = context;
         this.mediaCollection = mediaCollection;
-        itemSize = (int) ((context.getResources().getDisplayMetrics().widthPixels - (itemCount+1) * margin) / itemCount);
+        itemSize = (int) ((context.getResources().getDisplayMetrics().widthPixels - (columnCount+1) * margin) / columnCount);
     }
 
     public void setNeedCkb(boolean isNeed){
@@ -68,26 +60,20 @@ public class GalleryItemsAdapter extends RecyclerViewCursorAdapter<GalleryItemsA
 
     @Override
     protected void onBindViewHolder(MediaViewHolder holder, final Cursor cursor) {
+        resetItemSize(holder.cv_img);
         if(needFirstItem && holder.getAdapterPosition() == 0){
-            RelativeLayout.LayoutParams lp = (RelativeLayout.LayoutParams) holder.ll_camera.getLayoutParams();
-            lp.width = itemSize;
-            holder.ll_camera.setLayoutParams(lp);
-            holder.ll_camera.setVisibility(View.VISIBLE);
-            holder.ll_camera.setOnClickListener(new View.OnClickListener() {
+            //相机按钮
+            holder.setItemType(true);
+            holder.ll_time.setVisibility(View.GONE);
+            holder.cv_img.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    CameraGalleryUtils.getInstance(mContext).openSysCamera();
+                    GalleryMediaUtils.getInstance(mContext).openSysCamera("tmp_");
                 }
             });
-//            holder.rl_img.setVisibility(View.GONE);
-            holder.cv_img.setVisibility(View.GONE);
+
         }else {
-            holder.ll_camera.setVisibility(View.GONE);
-//            holder.rl_img.setVisibility(View.VISIBLE);
-            holder.cv_img.setVisibility(View.VISIBLE);
-            RelativeLayout.LayoutParams lp = (RelativeLayout.LayoutParams) holder.cv_img.getLayoutParams();
-            lp.width = itemSize;
-            holder.cv_img.setLayoutParams(lp);
+            holder.setItemType(false);
             ItemModel model = ItemModel.valueOf(cursor);
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                 GlideImageLoader.getInstance().loadLocalImage(mContext, model.getContentUri(), R.mipmap.placeholder, new Size(itemSize, itemSize), holder.iv_img);
@@ -96,11 +82,15 @@ public class GalleryItemsAdapter extends RecyclerViewCursorAdapter<GalleryItemsA
             }
 
             holder.tv_time.setText(DateUtils.formatElapsedTime(model.duration / 1000));
-//        int pdleft = DisplayUtil.px2dip(mContext, itemSize / 2), pdTop = DisplayUtil.dip2px(mContext, 5);
-//        holder.ckb_isCheck.setPadding(pdleft, pdTop, pdTop, pdleft);
             holder.setMediaType(MimeType.isPic(model.mimeType));
             setItemStatus(holder, model);
         }
+    }
+
+    private void resetItemSize(View view){
+        RelativeLayout.LayoutParams lp = (RelativeLayout.LayoutParams) view.getLayoutParams();
+        lp.width = itemSize;
+        view.setLayoutParams(lp);
     }
 
     private void setItemStatus(final GalleryItemsAdapter.MediaViewHolder holder, final ItemModel model){
@@ -122,6 +112,7 @@ public class GalleryItemsAdapter extends RecyclerViewCursorAdapter<GalleryItemsA
                 @Override
                 public void onClick(View v) {
                     //listnener.onItemClicked(model, holder.ckb_isCheck.isChecked());
+                    //点击图片等同于点击选择框，也可以单独处理图片点击
                     holder.ckb_isCheck.setChecked(!holder.ckb_isCheck.isChecked());
                 }
             });
@@ -131,23 +122,23 @@ public class GalleryItemsAdapter extends RecyclerViewCursorAdapter<GalleryItemsA
 
     @Override
     protected int getItemViewType(int position, Cursor cursor) {
-        return 0;
+        if(!isDataValid(cursor))
+            return 0;
+        ItemModel item = ItemModel.valueOf(cursor);
+        return (int) MimeType.getMimeTypeWithTypeName(item.mimeType).getMimeTypeId();
     }
 
     public static class MediaViewHolder extends RecyclerView.ViewHolder{
-        private LinearLayout ll_camera;
-//        private RelativeLayout rl_img;
         private CardView cv_img;
-        private ImageView iv_img;
+        private ImageView iv_camera, iv_img;
         private CheckBox ckb_isCheck;
         private LinearLayout ll_time;
         private TextView tv_time;
 
         public MediaViewHolder(View itemView) {
             super(itemView);
-            ll_camera = (LinearLayout) itemView.findViewById(R.id.ll_camera);
-//            rl_img = (RelativeLayout) itemView.findViewById(R.id.rl_img);
             cv_img = (CardView) itemView.findViewById(R.id.cv_img);
+            iv_camera = (ImageView) itemView.findViewById(R.id.iv_camera);
             iv_img = (ImageView) itemView.findViewById(R.id.iv_img);
             iv_img.setAdjustViewBounds(true);
             ckb_isCheck = (CheckBox) itemView.findViewById(R.id.ckb_isCheck);
@@ -155,14 +146,14 @@ public class GalleryItemsAdapter extends RecyclerViewCursorAdapter<GalleryItemsA
             tv_time = (TextView) itemView.findViewById(R.id.tv_time);
         }
 
+        public void setItemType(boolean isCamera){
+            iv_camera.setVisibility(isCamera ? View.VISIBLE : View.GONE);
+            iv_img.setVisibility(isCamera ? View.GONE : View.VISIBLE);
+            ckb_isCheck.setVisibility(isCamera ? View.GONE : View.VISIBLE);
+        }
+
         public void setMediaType(boolean isPic){
-            if(isPic){
-                ckb_isCheck.setVisibility(View.VISIBLE);
-                ll_time.setVisibility(View.GONE);
-            }else{
-                ckb_isCheck.setVisibility(View.GONE);
-                ll_time.setVisibility(View.VISIBLE);
-            }
+            ll_time.setVisibility(isPic ? View.GONE : View.VISIBLE);
         }
     }
 }

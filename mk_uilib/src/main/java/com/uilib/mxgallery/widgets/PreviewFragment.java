@@ -36,7 +36,15 @@ public class PreviewFragment extends Fragment {
     private boolean isSelected;
     private OnSureListener listener;
 
-    public static PreviewFragment newInstance(MediaCollection collection, ItemModel model, int mimeType, boolean isSelected){
+    /**创建预览页
+     * 预览页分为预览被选中的素材和预览未选中的素材
+     * 预览选中素材时，预览整个集合，并跳转至点击的素材
+     * 预览未选中的素材时，只预览单个素材，并且操作栏提供“选择”功能，将该素材添加进集合
+     * @param collection 选中的素材集合
+     * @param model 点击的某个素材，仅item响应单独点击事件时生效
+     * @param isSelected 该素材是否被选中
+     * */
+    public static PreviewFragment newInstance(MediaCollection collection, ItemModel model, boolean isSelected){
         PreviewFragment fragment = new PreviewFragment();
         Bundle bundle = new Bundle();
         if(isSelected){
@@ -46,7 +54,6 @@ public class PreviewFragment extends Fragment {
             bundle.putParcelable(MODEL, model);
             bundle.putInt(POS, 0);
         }
-        bundle.putInt(MIMETYPE, mimeType);
         bundle.putBoolean(ISSELECTED, isSelected);
         fragment.setArguments(bundle);
         return fragment;
@@ -74,10 +81,26 @@ public class PreviewFragment extends Fragment {
         }
         vp_preview = (ViewPager) view.findViewById(R.id.vp_preview);
         bottomBar = (BottomBar) view.findViewById(R.id.bottomBar);
-        adapter = new PreviewPagerAdapter(getContext(), models, getArguments().getInt(MIMETYPE));
+        adapter = new PreviewPagerAdapter(getContext(), models);
         vp_preview.setAdapter(adapter);
         vp_preview.setCurrentItem(getArguments().getInt(POS));
-        bottomBar.updateBtnState(false, true);
+        vp_preview.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+                adapter.onPageSelected(position);
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
+            }
+        });
+        bottomBar.updateBtnState(true);
         bottomBar.needNum(isSelected);
         if(isSelected)
             bottomBar.updateNum(models.size());

@@ -10,5 +10,5 @@ import com.uilib.mxgallery.widgets.GalleryTabGroup;
 
 public interface GalleryTabListener {
      void onTabChecked(RadioButton tab, int id);
-     void onTabUpdated(GalleryTabGroup galleryTab, int tabCount, int itemCount);
+     void onTabUpdated(GalleryTabGroup galleryTab, int tabId, int selectedCount);
 }
