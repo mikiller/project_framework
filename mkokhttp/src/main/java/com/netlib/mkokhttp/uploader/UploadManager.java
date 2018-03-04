@@ -36,6 +36,15 @@ public class UploadManager {
         uploadTasks = Collections.synchronizedMap(new LinkedHashMap<String, UploadTask>());
     }
 
+    public UploadInfo createUploadInfo(String taskKey, String url, int fileLength, int state){
+        UploadInfo info = new UploadInfo();
+        info.setTaskKey(taskKey);
+        info.setUrl(url /*+ resFile.getName()*/);
+        info.setUploadLength(fileLength);
+        info.setState(state);
+        return info;
+    }
+
     public <T> void addTask(UploadInfo info, OkHttpRequest request, UploadListener<T> listener) {
         UploadTask uploadTask = new UploadTask(info, request, listener);
         uploadTasks.put(info.getTaskKey(), uploadTask);

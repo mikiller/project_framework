@@ -2,7 +2,6 @@ package com.uilib.mxgallery.models;
 
 import android.util.Log;
 
-import com.netlib.mkokhttp.uploader.UploadInfo;
 import com.uilib.mxgallery.models.MimeType;
 
 import java.io.File;
@@ -19,7 +18,7 @@ public class ReportResModel implements Serializable {
     private File resFile;
     private MimeType mimeType;
     private long duration;
-    private UploadInfo info;
+//    private UploadInfo info;
 
     public ReportResModel(String id, MimeType mimeType, File resFile) {
         this.mimeType = mimeType;
@@ -68,35 +67,35 @@ public class ReportResModel implements Serializable {
         this.resFile = resFile;
     }
 
-    public void createUploadInfo(String taskKey, String url, int state){
-        info = new UploadInfo();
-        info.setTaskKey(taskKey);
-        info.setUrl(url /*+ resFile.getName()*/);
-        info.setUploadLength(resFile.length());
-        info.setState(state);
-    }
-
-    public UploadInfo getUploadInfo() {
-        return info;
-    }
-
-    public void setUploadInfo(UploadInfo info) {
-        this.info = info;
-    }
-
-    public int getProgress(){
-        return (int) info.getProgress();
-    }
-
-    public void setProgress(int progress){
-        info.setProgress(progress);
-    }
-
-    public int getState(){
-        return info.getState();
-    }
-
-    public void setState(int state){
-        info.setState(state);
-    }
+//    public void createUploadInfo(String taskKey, String url, int state){
+//        info = new UploadInfo();
+//        info.setTaskKey(taskKey);
+//        info.setUrl(url /*+ resFile.getName()*/);
+//        info.setUploadLength(resFile.length());
+//        info.setState(state);
+//    }
+//
+//    public UploadInfo getUploadInfo() {
+//        return info;
+//    }
+//
+//    public void setUploadInfo(UploadInfo info) {
+//        this.info = info;
+//    }
+//
+//    public int getProgress(){
+//        return (int) info.getProgress();
+//    }
+//
+//    public void setProgress(int progress){
+//        info.setProgress(progress);
+//    }
+//
+//    public int getState(){
+//        return info.getState();
+//    }
+//
+//    public void setState(int state){
+//        info.setState(state);
+//    }
 }
