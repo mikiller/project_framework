@@ -118,7 +118,8 @@ public class PreviewPagerAdapter extends PagerAdapter {
             lastHolder.stopVideo();
         }
         PageHolder holder = ((PageHolder) mContainer.findViewById(pos).getTag());
-        holder.viewVideo.setVideoPath(mItems.get(pos).getPath());
+        holder.viewVideo.resume();
+        //holder.viewVideo.setVideoPath(mItems.get(pos).getPath());
 //        holder.viewVideo.resume();
     }
 
@@ -157,12 +158,13 @@ public class PreviewPagerAdapter extends PagerAdapter {
         }
 
         public void setVideoPreview(final ItemModel item) {
-            viewVideo.setVideoPath(item.getPath());
+
+            //viewVideo.resume();
             viewVideo.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
                 @Override
                 public void onCompletion(MediaPlayer mp) {
                     stopVideo();
-
+                    viewVideo.resume();
                 }
             });
 
@@ -172,7 +174,7 @@ public class PreviewPagerAdapter extends PagerAdapter {
                     prepareVideo();
                 }
             });
-
+            viewVideo.setVideoPath(item.getPath());
             btn_start.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -227,7 +229,6 @@ public class PreviewPagerAdapter extends PagerAdapter {
             viewVideo.seekTo(viewVideo.getCurrentPosition() == 0 ? 1 : viewVideo.getCurrentPosition());
             pgs.setMax(viewVideo.getDuration());
             tv_time.setText(DateUtils.formatElapsedTime(viewVideo.getDuration() / 1000));
-            lastHolder = this;
         }
 
         public void startVideo(int startPos) {
@@ -240,10 +241,11 @@ public class PreviewPagerAdapter extends PagerAdapter {
 
                 }
             }, 0, 10);
-            viewVideo.resume();
+            //viewVideo.resume();
             viewVideo.seekTo(startPos);
             viewVideo.start();
             state = VidoeState.START;
+            lastHolder = this;
         }
 
         private void updateTime() {
@@ -265,6 +267,7 @@ public class PreviewPagerAdapter extends PagerAdapter {
 
             }
             viewVideo.stopPlayback();
+//            viewVideo.suspend();
             pgs.setProgress(0);
             btn_start.setChecked(false);
 
