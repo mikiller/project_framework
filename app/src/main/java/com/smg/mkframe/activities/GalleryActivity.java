@@ -85,7 +85,7 @@ public class GalleryActivity extends BaseActivity {
             }
         });
         gallery.setIsMultiple(isMultiple);
-        gallery.setMimeType(MimeType.ofAll());
+        gallery.setMimeType(MimeType.ofVideo());
         gallery.setMaxSelectionCount(maxSelect);
         gallery.onCreate(savedBundle);
         gallery.setSelectListener(new OnBottomBarListener() {

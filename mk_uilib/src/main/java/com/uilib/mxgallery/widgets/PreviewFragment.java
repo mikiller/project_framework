@@ -110,7 +110,7 @@ public class PreviewFragment extends Fragment {
         });
         adapter = new PreviewPagerAdapter(getContext(), models);
         vp_preview.setAdapter(adapter);
-        vp_preview.setCurrentItem(getArguments().getInt(POS));
+
         vp_preview.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
@@ -127,7 +127,7 @@ public class PreviewFragment extends Fragment {
 
             }
         });
-
+        vp_preview.setCurrentItem(getArguments().getInt(POS));
     }
 
     @Override
