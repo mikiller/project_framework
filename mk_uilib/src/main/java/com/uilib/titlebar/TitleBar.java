@@ -175,6 +175,10 @@ public class TitleBar extends RelativeLayout {
         ll_menu.performClick();
     }
 
+    public void setMenu(String name){
+        tv_menu.setText(name);
+    }
+
     public static abstract class TitleListener{
         protected void onBackClicked(){}
         protected void onSubClicked(){}

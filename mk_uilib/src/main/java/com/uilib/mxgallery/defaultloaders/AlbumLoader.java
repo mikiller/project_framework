@@ -25,12 +25,12 @@ import android.provider.MediaStore;
 import android.support.v4.content.CursorLoader;
 
 import com.uilib.mxgallery.models.Album;
+import com.uilib.mxgallery.models.MimeType;
 
 
 public class AlbumLoader extends CursorLoader {
     public final static int LOADER_ID = 2;
     private static Uri QUERY_URI = MediaStore.Files.getContentUri("external");
-
 
     private static String[] PROJECTION = new String[]{
                 MediaStore.Files.FileColumns._ID,
@@ -53,12 +53,18 @@ public class AlbumLoader extends CursorLoader {
                     + " AND " + MediaStore.MediaColumns.SIZE + ">0"
                     + ") GROUP BY (bucket_id";
     private static final String[] SELECTION_ARGS = {
-            String.valueOf(MediaStore.Files.FileColumns.MEDIA_TYPE_IMAGE)//,
-            //String.valueOf(MediaStore.Files.FileColumns.MEDIA_TYPE_VIDEO),
+            String.valueOf(MediaStore.Files.FileColumns.MEDIA_TYPE_IMAGE),
+            String.valueOf(MediaStore.Files.FileColumns.MEDIA_TYPE_VIDEO)
     };
 
-    public AlbumLoader(Context context) {
+    public AlbumLoader(Context context, int mimeType) {
         super(context, QUERY_URI, PROJECTION, SELECTION, SELECTION_ARGS, ORDER_BY);
+        if(MimeType.isPic(mimeType)){
+            SELECTION_ARGS[1] = "";
+        }else if(MimeType.isVideo(mimeType)){
+            SELECTION_ARGS[0] = "";
+        }
+        setSelectionArgs(SELECTION_ARGS);
     }
 
     @Override

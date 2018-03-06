@@ -5,23 +5,15 @@
     android:layout_height="match_parent"
     android:fitsSystemWindows="false">
 
-    <com.uilib.titlebar.TitleBar
-        xmlns:title="http://schemas.android.com/apk/res-auto"
-        android:id="@+id/titleBar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        title:backStyle="FORK"
-        title:titleStyle="MENU" />
-
     <com.uilib.mxgallery.widgets.MXGallery
         android:id="@+id/gallery"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@android:color/white"
         android:layout_below="@+id/titleBar"
-        gal:needTab="false"
+        android:background="@android:color/white"
         gal:columnNum="3"
-        gal:itemMargin="6dp"/>
+        gal:itemMargin="6dp"
+        gal:needTab="false" />
 
     <FrameLayout
         android:id="@+id/fl_pop"
@@ -35,5 +27,13 @@
             android:id="@+id/rcv_dirList"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
+
     </FrameLayout>
+
+    <com.uilib.titlebar.TitleBar xmlns:title="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/titleBar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        title:backStyle="FORK"
+        title:titleStyle="MENU" />
 </RelativeLayout>

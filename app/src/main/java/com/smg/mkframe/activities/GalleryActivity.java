@@ -1,5 +1,6 @@
 package com.smg.mkframe.activities;
 
+import android.animation.ValueAnimator;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
@@ -23,6 +24,7 @@ import com.uilib.mxgallery.models.ReportResModel;
 import com.uilib.mxgallery.utils.GalleryMediaUtils;
 import com.uilib.mxgallery.utils.GalleryLoaderUtils;
 import com.uilib.mxgallery.widgets.MXGallery;
+import com.uilib.utils.AnimUtils;
 
 import java.io.File;
 import java.io.Serializable;
@@ -84,8 +86,9 @@ public class GalleryActivity extends BaseActivity {
                     hideDirList();
             }
         });
+        titleBar.setMenu(getString(R.string.tab_all));
         gallery.setIsMultiple(isMultiple);
-        gallery.setMimeType(MimeType.ofVideo());
+        gallery.setMimeType(MimeType.ofImage());
         gallery.setMaxSelectionCount(maxSelect);
         gallery.onCreate(savedBundle);
         gallery.setSelectListener(new OnBottomBarListener() {
@@ -105,8 +108,9 @@ public class GalleryActivity extends BaseActivity {
         adapter = new DirRcvAdapter(this);
         adapter.setListener(new DirRcvAdapter.onItemClickListener() {
             @Override
-            public void onItemClicked(String bucketId) {
+            public void onItemClicked(String bucketId, String albumName) {
                 titleBar.callMenuCheck();
+                titleBar.setMenu(albumName);
                 gallery.setBucketId(bucketId);
 
             }
@@ -118,13 +122,20 @@ public class GalleryActivity extends BaseActivity {
         GalleryLoaderUtils.initLoaderManager(this, AlbumLoader.LOADER_ID, new LoaderManager.LoaderCallbacks<Cursor>() {
             @Override
             public Loader<Cursor> onCreateLoader(int id, Bundle args) {
-                return new AlbumLoader(GalleryActivity.this);
+                return new AlbumLoader(GalleryActivity.this, gallery.getMimeType());
             }
 
             @Override
             public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
                 adapter.swapCursor(data);
-                fl_pop.setVisibility(View.VISIBLE);
+                fl_pop.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        fl_pop.setVisibility(View.VISIBLE);
+                        AnimUtils.startObjectAnim(fl_pop, "translationY", -fl_pop.getMeasuredHeight(), 0, 300);
+                    }
+                }, 100);
+
             }
 
             @Override
@@ -135,13 +146,20 @@ public class GalleryActivity extends BaseActivity {
     }
 
     private void hideDirList() {
-        adapter.swapCursor(null);
-        fl_pop.setVisibility(View.GONE);
+        AnimUtils.startObjectAnim(fl_pop, "translationY", 0, -fl_pop.getMeasuredHeight(), 300, new ValueAnimator.AnimatorUpdateListener() {
+            @Override
+            public void onAnimationUpdate(ValueAnimator animation) {
+                if (((float) animation.getAnimatedValue()) == -fl_pop.getMeasuredHeight()) {
+                    adapter.swapCursor(null);
+                    fl_pop.setVisibility(View.GONE);
+                }
+            }
+        });
     }
 
-    private void onGetImgFiles(String key, Object value){
+    private void onGetImgFiles(String key, Object value) {
         //TODO:do something after get img files
-        if(value instanceof List){
+        if (value instanceof List) {
             Intent intent = new Intent();
             intent.putExtra(key, (Serializable) value);
             setResult(RESULT_OK, intent);

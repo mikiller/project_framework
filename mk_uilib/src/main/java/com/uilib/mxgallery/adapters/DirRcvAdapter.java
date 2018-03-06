@@ -4,7 +4,6 @@ import android.content.Context;
 import android.database.Cursor;
 import android.net.Uri;
 import android.support.v7.widget.RecyclerView;
-import android.util.Size;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,7 +23,7 @@ import java.io.File;
 
 public class DirRcvAdapter extends RecyclerViewCursorAdapter<DirRcvAdapter.Holder> {
     Context mContext;
-    int[] size;
+    int[] coverSize;
 
     private onItemClickListener listener;
 
@@ -39,21 +38,22 @@ public class DirRcvAdapter extends RecyclerViewCursorAdapter<DirRcvAdapter.Holde
 
     @Override
     public Holder onCreateViewHolder(ViewGroup parent, int viewType) {
-        size = new int[]{DisplayUtil.dip2px(mContext, 45), DisplayUtil.dip2px(mContext, 45)};
+        coverSize = new int[]{DisplayUtil.dip2px(mContext, 45), DisplayUtil.dip2px(mContext, 45)};
         return new Holder(LayoutInflater.from(mContext).inflate(R.layout.item_dirlist, parent, false));
     }
 
     @Override
     protected void onBindViewHolder(final Holder holder, Cursor cursor) {
         final Album album = Album.valueOf(cursor);
-        GlideImageLoader.getInstance().loadLocalImage(mContext, Uri.fromFile(new File(album.getCoverPath())), size, R.mipmap.placeholder, holder.iv_img);
-        holder.tv_dirName.setText(album.getDisplayName(mContext));
+
+        GlideImageLoader.getInstance().loadLocalImage(mContext, Uri.fromFile(new File(album.getCoverPath())), coverSize, R.mipmap.placeholder, holder.iv_img);
+        holder.tv_dirName.setText(album.getDisplayName(mContext.getString(mContext.getResources().getIdentifier("tab_all", "string", mContext.getPackageName()))));
         holder.tv_count.setText(String.valueOf(album.getCount()));
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if(listener != null)
-                    listener.onItemClicked(album.getId());
+                    listener.onItemClicked(album.getId(), holder.tv_dirName.getText().toString());
             }
         });
     }
@@ -76,6 +76,6 @@ public class DirRcvAdapter extends RecyclerViewCursorAdapter<DirRcvAdapter.Holde
     }
 
     public interface onItemClickListener{
-        void onItemClicked(String bucketId);
+        void onItemClicked(String bucketId, String albumName);
     }
 }

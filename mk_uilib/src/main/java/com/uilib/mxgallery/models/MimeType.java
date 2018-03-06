@@ -209,6 +209,14 @@ public enum MimeType {
         return EnumSet.of(JPEG, PNG, GIF, BMP, WEBP);
     }
 
+    public static boolean isAll(int mimeType){
+        int rst = 0;
+        for(MimeType type : ofAll()){
+            rst ^= type.mMimeTypeId;
+        }
+        return mimeType == rst;
+    }
+
     public static boolean isPic(int mimeType){
         return mimeType == (JPEG.mMimeTypeId ^ PNG.mMimeTypeId ^ GIF.mMimeTypeId ^ BMP.mMimeTypeId ^ WEBP.mMimeTypeId);
     }

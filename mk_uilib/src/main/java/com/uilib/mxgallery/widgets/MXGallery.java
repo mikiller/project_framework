@@ -125,6 +125,10 @@ public class MXGallery extends RelativeLayout implements LoaderManager.LoaderCal
         //bottomBar.setVisibility(MimeType.isPic(this.mimeType) ? VISIBLE : GONE);
     }
 
+    public int getMimeType(){
+        return mimeType;
+    }
+
     /**相册被构建后通过调用{@code onCreate}初始化数据集
      * 若有参数需要动态设置，需在此函数之前调用
      * @see #isMultiple

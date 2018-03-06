@@ -100,9 +100,9 @@ public class Album implements Parcelable {
         mCount++;
     }
 
-    public String getDisplayName(Context context) {
+    public String getDisplayName(String defaultName) {
         if (isAll()) {
-            return context.getString(context.getResources().getIdentifier("tab_all", "string", context.getPackageName()));
+            return defaultName;
         }
         return mDisplayName;
     }

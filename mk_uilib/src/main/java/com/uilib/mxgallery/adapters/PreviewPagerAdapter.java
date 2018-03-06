@@ -98,6 +98,7 @@ public class PreviewPagerAdapter extends PagerAdapter {
         mItems = null;
         mContext = null;
         mContainer = null;
+        lastHolder = null;
         if(timer != null) {
             timer.cancel();
             timer = null;
@@ -117,10 +118,7 @@ public class PreviewPagerAdapter extends PagerAdapter {
         if (lastHolder != null && !lastHolder.isPic) {
             lastHolder.stopVideo();
         }
-        PageHolder holder = ((PageHolder) mContainer.findViewById(pos).getTag());
-        holder.viewVideo.resume();
-        //holder.viewVideo.setVideoPath(mItems.get(pos).getPath());
-//        holder.viewVideo.resume();
+        ((PageHolder) mContainer.findViewById(pos).getTag()).viewVideo.resume();
     }
 
     private class PageHolder {
@@ -208,18 +206,10 @@ public class PreviewPagerAdapter extends PagerAdapter {
 
                 @Override
                 public void onStartTrackingTouch(SeekBar seekBar) {
-                    Log.e("seekbar", "pgs: " + seekBar.getProgress());
-                    if(viewVideo.isPlaying())
-                        btn_start.performClick();
                 }
 
                 @Override
                 public void onStopTrackingTouch(SeekBar seekBar) {
-                    Log.e("seekbar", "pgs2: " + seekBar.getProgress());
-                    if(state == VidoeState.PAUSE) {
-                        viewVideo.start();
-                        state = VidoeState.START;
-                    }
                 }
             });
         }
@@ -241,7 +231,6 @@ public class PreviewPagerAdapter extends PagerAdapter {
 
                 }
             }, 0, 10);
-            //viewVideo.resume();
             viewVideo.seekTo(startPos);
             viewVideo.start();
             state = VidoeState.START;
