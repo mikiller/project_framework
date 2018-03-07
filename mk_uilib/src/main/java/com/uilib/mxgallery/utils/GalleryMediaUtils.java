@@ -16,7 +16,6 @@ import android.util.Log;
 import android.webkit.MimeTypeMap;
 import android.widget.Toast;
 
-import com.uilib.R;
 import com.uilib.mxgallery.models.MimeType;
 import com.uilib.mxgallery.models.ReportResModel;
 
@@ -36,7 +35,7 @@ import java.util.UUID;
 public class GalleryMediaUtils {
     private final static String TAG = GalleryMediaUtils.class.getSimpleName();
     public final static int CAMERA_CAPTURE = 1, CROP_PIC = 2, VIDEO = 3, FILES = 4, CROP_VIDEO = 5;
-    public final static String THUMB_FILE = "thumbfile", TMP_FILE = "tmpfile";
+    public final static String THUMB_LIST = "thumblist", TMP_FILE = "tmpfile";
     private Context mContext;
     public static String thumbDir = Environment.getExternalStorageDirectory().getPath().concat(File.separator).concat("DCIM/Camera/");
     private List<ReportResModel> thumbList;
@@ -89,7 +88,7 @@ public class GalleryMediaUtils {
 
     public void openVideoEditor(ReportResModel file) {
         Map<String, Object> args = new HashMap<>();
-        args.put(THUMB_FILE, file);
+        args.put(TMP_FILE, file);
         //ActivityManager.startActivityforResult((Activity) mContext, VideoEditorActivity.class, CROP_VIDEO, args);
     }
 

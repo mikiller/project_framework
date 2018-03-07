@@ -11,7 +11,6 @@ import com.mikiller.mkglidelib.imageloader.GlideImageLoader;
 import com.smg.mkframe.R;
 import com.smg.mkframe.base.BaseActivity;
 import com.uilib.mxgallery.utils.GalleryMediaUtils;
-import com.uilib.mxgallery.widgets.MXGallery;
 
 import java.io.File;
 import java.util.List;
@@ -52,8 +51,12 @@ public class WelcomeActivity extends BaseActivity {
             return;
         switch(requestCode){
             case 1:
-                List<File> path = (List<File>) data.getSerializableExtra(GalleryMediaUtils.THUMB_FILE);
-                GlideImageLoader.getInstance().loadLocalImage(this, Uri.fromFile(path.get(0)),R.mipmap.placeholder, iv_preview);
+                File tmpFile = (File) data.getSerializableExtra(GalleryMediaUtils.TMP_FILE);
+                List<File> fileList = (List<File>) data.getSerializableExtra(GalleryMediaUtils.THUMB_LIST);
+                if(tmpFile != null){
+                    GlideImageLoader.getInstance().loadLocalImage(this, GalleryMediaUtils.getInstance().getFileUri(tmpFile),R.mipmap.placeholder, iv_preview);
+                }else if(fileList != null && fileList.size() > 0)
+                    GlideImageLoader.getInstance().loadLocalImage(this, GalleryMediaUtils.getInstance().getFileUri(fileList.get(0)),R.mipmap.placeholder, iv_preview);
                 break;
         }
     }

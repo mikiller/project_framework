@@ -130,6 +130,7 @@ public class CustomDialog extends Dialog {
             setContentView(R.layout.layout_custom_dlg);
         getWindow().setGravity(Gravity.CENTER);
         getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+        getWindow().setWindowAnimations(R.style.dlg_anim);
         title = (TextView) findViewById(R.id.tv_dlg_title);
         if (title != null)
             title.setText(titleStr);

@@ -44,7 +44,7 @@ public class GalleryActivity extends BaseActivity {
     MXGallery gallery;
     @BindView(R.id.fl_pop)
     FrameLayout fl_pop;
-    @BindView(R.id.rcv_dirList)
+    @BindView(R.id.rcv_ablumList)
     RecyclerView rcv_dirList;
 
     private boolean isMultiple;
@@ -88,7 +88,7 @@ public class GalleryActivity extends BaseActivity {
         });
         titleBar.setMenu(getString(R.string.tab_all));
         gallery.setIsMultiple(isMultiple);
-        gallery.setMimeType(MimeType.ofImage());
+        gallery.setMimeType(MimeType.ofAll());
         gallery.setMaxSelectionCount(maxSelect);
         gallery.onCreate(savedBundle);
         gallery.setSelectListener(new OnBottomBarListener() {
@@ -98,7 +98,7 @@ public class GalleryActivity extends BaseActivity {
 
             @Override
             public void onConfirm(List<File> fileList) {
-                onGetImgFiles(GalleryMediaUtils.THUMB_FILE, fileList);
+                onGetImgFiles(GalleryMediaUtils.THUMB_LIST, fileList);
             }
         });
 
@@ -159,11 +159,9 @@ public class GalleryActivity extends BaseActivity {
 
     private void onGetImgFiles(String key, Object value) {
         //TODO:do something after get img files
-        if (value instanceof List) {
-            Intent intent = new Intent();
-            intent.putExtra(key, (Serializable) value);
-            setResult(RESULT_OK, intent);
-        }
+        Intent intent = new Intent();
+        intent.putExtra(key, (Serializable) value);
+        setResult(RESULT_OK, intent);
         back();
     }
 
@@ -192,12 +190,16 @@ public class GalleryActivity extends BaseActivity {
 //        }, 100l);
     }
 
+    /**
+     * 来自于系统相机的返回
+     * 直接将临时文件返回给调用相册的activity
+     * */
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode != RESULT_OK)
             return;
-        onGetImgFiles(GalleryMediaUtils.TMP_FILE, gmUtils.tmpFile.getResFile().getPath());
+        onGetImgFiles(GalleryMediaUtils.TMP_FILE, gmUtils.tmpFile.getResFile());
     }
 
     @Override

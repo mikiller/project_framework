@@ -32,4 +32,5 @@
     <color name="pgs_back_color">#e8faff</color>
     <color name="pgs_front_color">#0ca8fc</color>
     <color name="pgs_text_color">#567188</color>
+    <color name="dir_list_bg">#77000000</color>
 </resources>

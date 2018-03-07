@@ -18,6 +18,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.mikiller.mkglidelib.imageloader.GlideImageLoader;
+import com.uilib.customdialog.CustomDialog;
 import com.uilib.mxgallery.models.ItemModel;
 import com.uilib.mxgallery.models.MimeType;
 import com.uilib.mxgallery.utils.GalleryMediaUtils;
@@ -36,6 +37,7 @@ public class GalleryItemsAdapter extends RecyclerViewCursorAdapter<GalleryItemsA
     private OnMediaItemClickListener listnener;
     private MediaCollection mediaCollection;
     private boolean needCkb = true;
+    private int mimeType;
 
     public GalleryItemsAdapter(Context context, MediaCollection mediaCollection, int columnCount, float margin) {
         super(null);
@@ -46,6 +48,10 @@ public class GalleryItemsAdapter extends RecyclerViewCursorAdapter<GalleryItemsA
 
     public void setNeedCkb(boolean isNeed){
         needCkb = isNeed;
+    }
+
+    public void setMimeType(int mimeType){
+        this.mimeType = mimeType;
     }
 
     public void setItemClickeListener(OnMediaItemClickListener listnener){
@@ -68,7 +74,13 @@ public class GalleryItemsAdapter extends RecyclerViewCursorAdapter<GalleryItemsA
             holder.cv_img.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    GalleryMediaUtils.getInstance(mContext).openSysCamera("tmp_");
+                    if(MimeType.isPic(mimeType))
+                        GalleryMediaUtils.getInstance(mContext).openSysCamera("tmp_");
+                    else if(MimeType.isVideo(mimeType))
+                        GalleryMediaUtils.getInstance(mContext).openSysVideo("tmp_");
+                    else{
+                        showSelectDlg();
+                    }
                 }
             });
 
@@ -85,6 +97,20 @@ public class GalleryItemsAdapter extends RecyclerViewCursorAdapter<GalleryItemsA
             holder.setMediaType(MimeType.isPic(model.mimeType));
             setItemStatus(holder, model);
         }
+    }
+
+    private void showSelectDlg(){
+        final CustomDialog dlg = new CustomDialog(mContext);
+        dlg.setLayoutRes(R.layout.layout_selection_dlg).setOnCustomBtnClickListener(new CustomDialog.onCustomBtnsClickListener() {
+            @Override
+            public void onBtnClick(int id) {
+                if(id == R.id.btn_1)
+                    GalleryMediaUtils.getInstance(mContext).openSysCamera("tmp_");
+                else if(id == R.id.btn_2)
+                    GalleryMediaUtils.getInstance(mContext).openSysVideo("tmp_");
+                dlg.dismiss();
+            }
+        }, R.id.btn_1, R.id.btn_2, R.id.btn_3).setCustomBtnText("照片", "视频", "取消").setTitle("选择要拍摄的格式").show();
     }
 
     private void resetItemSize(View view){

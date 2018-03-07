@@ -60,7 +60,7 @@ public class MXGallery extends RelativeLayout implements LoaderManager.LoaderCal
     private int columnNum = 4, maxSelectionCount = 9;
     private float itemMargin = 8;
     private boolean needEdge = false, isMultiple = true;
-    /**目录id？*/
+    /**目录id*/
     private String bucketId = null;
 
     public MXGallery(Context context) {
@@ -118,8 +118,8 @@ public class MXGallery extends RelativeLayout implements LoaderManager.LoaderCal
         this.maxSelectionCount = max;
     }
 
-    public void setMimeType(Set<MimeType> mimeType) {
-        for (MimeType type : mimeType) {
+    public void setMimeType(Set<MimeType> mimeTypeSet) {
+        for (MimeType type : mimeTypeSet) {
             this.mimeType ^= type.getMimeTypeId();
         }
         //bottomBar.setVisibility(MimeType.isPic(this.mimeType) ? VISIBLE : GONE);
@@ -147,8 +147,9 @@ public class MXGallery extends RelativeLayout implements LoaderManager.LoaderCal
         rcv_gallery.setHasFixedSize(true);
         rcv_gallery.addItemDecoration(new MediaItemDecoration(columnNum, itemMargin, needEdge));
 
-        itemsAdapter = new GalleryItemsAdapter(getContext(), mediaCollection, columnNum, itemMargin);
+        itemsAdapter = new GalleryItemsAdapter(getContext(),mediaCollection, columnNum, itemMargin);
         itemsAdapter.setNeedFirstItem(true);
+        itemsAdapter.setMimeType(this.mimeType);
         itemsAdapter.setItemClickeListener(new OnMediaItemClickListener() {
             @Override
             public void onItemChecked(ItemModel item, boolean isChecked) {
