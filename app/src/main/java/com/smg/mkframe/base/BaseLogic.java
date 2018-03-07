@@ -30,8 +30,7 @@ import okhttp3.Response;
  */
 public abstract class BaseLogic<P> extends Callback<P> {
     private final String TAG = this.getClass().getSimpleName();
-//    public static final String serviceIp = "http://218.1.109.5";
-    private String webServiceIp = "";
+    private String hostIp = "";
     protected Context context;
 
     OkHttpManager httpMgr;
@@ -54,7 +53,7 @@ public abstract class BaseLogic<P> extends Callback<P> {
 
     public BaseLogic(Context context) {
         httpMgr = OkHttpManager.getInstance();
-        httpMgr.init(webServiceIp);
+        httpMgr.init(hostIp);
         if (context != null) {
             this.context = context;
             networkDlg = new ProgressDialog(context,
@@ -114,9 +113,9 @@ public abstract class BaseLogic<P> extends Callback<P> {
         if (needDlg)
             showProgressDialog();
         if (model != null)
-            OkHttpManager.getInstance().sendRequest(webServiceIp.concat(url), requestType, model, files, this);
+            OkHttpManager.getInstance().sendRequest(hostIp.concat(url), requestType, model, files, this);
         else if (params != null) {
-            OkHttpManager.getInstance().sendRequest(webServiceIp.concat(url), requestType, params, files, this);
+            OkHttpManager.getInstance().sendRequest(hostIp.concat(url), requestType, params, files, this);
         }
     }
 

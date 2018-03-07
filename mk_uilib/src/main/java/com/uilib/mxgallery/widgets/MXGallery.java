@@ -136,6 +136,7 @@ public class MXGallery extends RelativeLayout implements LoaderManager.LoaderCal
      * @see #columnNum
      * @see #itemMargin
      * @see #needEdge
+     * @see #mimeType
      * */
     public void onCreate(Bundle bundle) {
         if(bundle != null)
