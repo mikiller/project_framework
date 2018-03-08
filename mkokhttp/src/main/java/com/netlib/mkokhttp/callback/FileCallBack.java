@@ -9,9 +9,6 @@ import java.io.InputStream;
 
 import okhttp3.Response;
 
-/**
- * Created by zhy on 15/12/15.
- */
 public abstract class FileCallBack extends Callback<File>
 {
     /**

@@ -9,6 +9,7 @@ import com.netlib.mkokhttp.builder.PostFormBuilder;
 import com.netlib.mkokhttp.callback.Callback;
 import com.netlib.mkokhttp.https.HttpsUtils;
 import com.netlib.mkokhttp.log.LoggerInterceptor;
+import com.netlib.mkokhttp.utils.Exceptions;
 import com.netlib.mkokhttp.utils.OkHttpUtils;
 import com.netlib.mkokhttp.utils.ReflectUtils;
 
@@ -22,21 +23,12 @@ import javax.net.ssl.SSLSession;
 
 import okhttp3.OkHttpClient;
 
-/**
- * Created by Mikiller on 2016/7/20.
- */
 public class OkHttpManager {
-
-    private String BASE_URL;
 
     private OkHttpUtils httpUtils = OkHttpUtils.getInstance();
 
     public enum RequestType{
         GET, POST, JSONPOST
-    }
-
-    private static class OkHttpManagerFactory{
-        private static OkHttpManager instance = new OkHttpManager();
     }
 
     private Gson gson = null;
@@ -45,16 +37,15 @@ public class OkHttpManager {
         gson = new Gson();
     }
 
+    private static class OkHttpManagerFactory{
+        private static OkHttpManager instance = new OkHttpManager();
+    }
+
     public static OkHttpManager getInstance(){
         return OkHttpManagerFactory.instance;
     }
 
-    public void Log(){
-        Log.e(OkHttpManager.class.getSimpleName(), this.toString());
-    }
-
-    public void init(String baseUrl){
-        BASE_URL = baseUrl;
+    public void init(){
         initClient();
     }
 
@@ -86,35 +77,27 @@ public class OkHttpManager {
         return gson;
     }
 
-//    public void sendRequest(String url, RequestType requestType, Object paramObj, Callback callback){
-//        sendRequest(url, requestType, gson.toJson(paramObj), callback);
-//    }
-
     public void sendRequest(String url, RequestType requestType, Object paramObj, Map<String, File> files, Callback callback){
-        if(requestType == RequestType.GET){
-            executeRequest(requestGet(), url, callback);
-        }else if(requestType == RequestType.JSONPOST){
+        if(requestType == RequestType.JSONPOST){
             executeRequest(requestJsonPost(gson.toJson(paramObj)), url, callback);
-        }else if(requestType == RequestType.POST){
-            executeRequest(requestPost(ReflectUtils.getInstance().toMap(paramObj), files), url, callback);
         }else{
-            callback.onError(null, new UnknownHostException("requestType is error"), -1);
+            sendRequest(url, requestType, ReflectUtils.getInstance().toMap(paramObj), files, callback);
         }
     }
 
     public void sendRequest(String url, RequestType requestType, Map<String, String> params, Map<String, File> files, Callback callback){
         if(requestType == RequestType.GET) {
-            executeRequest(requestGet(), url, callback);
+            executeRequest(requestGet(params), url, callback);
         }else if(requestType == RequestType.POST){
             executeRequest(requestPost(params, files), url, callback);
         }
         else{
-            callback.onError(null, new UnknownHostException("requestType is error"), -1);
+            callback.onError(null, Exceptions.wrongParam("%1$s:%2$s", "-997", "requestType is error"), -1);
         }
     }
 
-    private OkHttpRequestBuilder requestGet(){
-        return OkHttpUtils.get();
+    private OkHttpRequestBuilder requestGet(Map<String, String> params){
+        return OkHttpUtils.get().params(params);
     }
 
     private OkHttpRequestBuilder requestJsonPost(String json){

@@ -3,7 +3,7 @@ package com.smg.mkframe.base;
 import java.io.Serializable;
 
 /**
- * Created by Mikiller on 2016/7/22.
+ * @author Mikiller
  */
 public class BaseResponse<T> implements Serializable{
     private static final long serialVersionUID = 9212683573784775316L;

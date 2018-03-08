@@ -2,9 +2,6 @@ package com.netlib.mkokhttp.log;
 
 import android.util.Log;
 
-/**
- * Created by zhy on 15/11/6.
- */
 public class L
 {
     private static boolean debug = false;

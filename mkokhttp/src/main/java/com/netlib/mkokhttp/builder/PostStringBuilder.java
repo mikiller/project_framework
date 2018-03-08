@@ -5,9 +5,6 @@ import com.netlib.mkokhttp.request.RequestCall;
 
 import okhttp3.MediaType;
 
-/**
- * Created by zhy on 15/12/14.
- */
 public class PostStringBuilder extends OkHttpRequestBuilder<PostStringBuilder>
 {
     public static MediaType JSON_TYPE = MediaType.parse("application/json; charset=utf-8");

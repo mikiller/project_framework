@@ -4,9 +4,6 @@ import com.netlib.mkokhttp.utils.OkHttpUtils;
 import com.netlib.mkokhttp.request.OtherRequest;
 import com.netlib.mkokhttp.request.RequestCall;
 
-/**
- * Created by zhy on 16/3/2.
- */
 public class HeadBuilder extends GetBuilder
 {
     @Override

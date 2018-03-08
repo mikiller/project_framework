@@ -12,9 +12,6 @@ import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.internal.http.HttpMethod;
 
-/**
- * Created by zhy on 16/2/23.
- */
 public class OtherRequest extends OkHttpRequest
 {
     private static MediaType MEDIA_TYPE_PLAIN = MediaType.parse("text/plain;charset=utf-8");

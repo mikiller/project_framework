@@ -9,9 +9,6 @@ import android.widget.ImageView;
 import java.io.InputStream;
 import java.lang.reflect.Field;
 
-/**
- * Created by zhy on 15/11/6.
- */
 public class ImageUtils
 {
     /**

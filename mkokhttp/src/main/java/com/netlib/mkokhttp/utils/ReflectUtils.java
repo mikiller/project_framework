@@ -14,9 +14,6 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.CountDownLatch;
 
-/**
- * Created by Mikiller on 2016/9/17.
- */
 public class ReflectUtils {
     Gson gson;
     private ReflectUtils(){ gson = new Gson();}

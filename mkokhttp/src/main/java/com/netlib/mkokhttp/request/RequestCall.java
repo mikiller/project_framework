@@ -1,5 +1,6 @@
 package com.netlib.mkokhttp.request;
 
+import com.netlib.mkokhttp.utils.Exceptions;
 import com.netlib.mkokhttp.utils.OkHttpUtils;
 import com.netlib.mkokhttp.callback.Callback;
 
@@ -11,12 +12,7 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
 
-/**
- * Created by zhy on 15/12/15.
- * 对OkHttpRequest的封装，对外提供更多的接口：cancel(),readTimeOut()...
- */
-public class RequestCall
-{
+public class RequestCall {
     private OkHttpRequest okHttpRequest;
     private Request request;
     private Call call;
@@ -83,42 +79,34 @@ public class RequestCall
             final Callback finalCallback = callback;
             final int id = okHttpRequest.getId();
 
-            call.enqueue(new okhttp3.Callback()
-            {
+            call.enqueue(new okhttp3.Callback() {
                 @Override
-                public void onFailure(Call call, final IOException e)
-                {
+                public void onFailure(Call call, final IOException e) {
                     OkHttpUtils.getInstance().sendFailResultCallback(call,
-                            new IOException("网络无连接"),
+                            Exceptions.connectError("-999","网络无连接"),
                             finalCallback,
                             id);
                 }
 
                 @Override
-                public void onResponse(final Call call, final Response response)
-                {
-                    try
-                    {
-                        if (call.isCanceled())
-                        {
+                public void onResponse(final Call call, final Response response) {
+                    try {
+                        if (call.isCanceled()) {
                             OkHttpUtils.getInstance().sendCancelResultCallback(call, finalCallback, id);
                             return;
                         }
 
-                        if (!finalCallback.validateReponse(response, id))
-                        {
-                            OkHttpUtils.getInstance().sendFailResultCallback(call, new IOException("request failed , reponse's code is : " + response.code()), finalCallback, id);
+                        if (!finalCallback.validateReponse(response, id)) {
+                            OkHttpUtils.getInstance().sendFailResultCallback(call, Exceptions.io("" + response.code(), "http请求失败," + response.message()), finalCallback, id);
                             return;
                         }
 
                         Object o = finalCallback.parseNetworkResponse(response, id);
-                        if(o != null)
+                        if (o != null)
                             OkHttpUtils.getInstance().sendSuccessResultCallback(o, finalCallback, id);
-                    } catch (Exception e)
-                    {
+                    } catch (Exception e) {
                         OkHttpUtils.getInstance().sendFailResultCallback(call, e, finalCallback, id);
-                    } finally
-                    {
+                    } finally {
                         if (response.body() != null)
                             response.body().close();
                     }
