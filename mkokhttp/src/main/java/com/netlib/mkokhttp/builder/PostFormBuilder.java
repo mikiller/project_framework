@@ -19,18 +19,18 @@ public class PostFormBuilder extends OkHttpRequestBuilder<PostFormBuilder> imple
         return new PostFormRequest(url, tag, params, headers, files,id).build();
     }
 
-    public PostFormBuilder files(String key, Map<String, File> files)
+    public PostFormBuilder files(Map<String, File> files)
     {
-        for (String filename : files.keySet())
+        for (String key : files.keySet())
         {
-            this.files.add(new FileInput(key, filename, files.get(filename)));
+            this.files.add(new FileInput(key, files.get(key).getName(), files.get(key)));
         }
         return this;
     }
 
-    public PostFormBuilder addFile(String name, String filename, File file)
+    public PostFormBuilder addFile(String key, String filename, File file)
     {
-        files.add(new FileInput(name, filename, file));
+        files.add(new FileInput(key, filename, file));
         return this;
     }
 
@@ -40,9 +40,9 @@ public class PostFormBuilder extends OkHttpRequestBuilder<PostFormBuilder> imple
         public String filename;
         public File file;
 
-        public FileInput(String name, String filename, File file)
+        public FileInput(String key, String filename, File file)
         {
-            this.key = name;
+            this.key = key;
             this.filename = filename;
             this.file = file;
         }

@@ -107,7 +107,7 @@ public class OkHttpManager {
     private OkHttpRequestBuilder requestPost(Map<String, String> params, Map<String, File> files){
         PostFormBuilder builder = OkHttpUtils.post().params(params);
         if(files.size() > 0)
-            builder.files("avator", files);
+            builder.files(files);
         return builder;
     }
 
