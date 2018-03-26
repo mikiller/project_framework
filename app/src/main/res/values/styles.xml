@@ -9,4 +9,7 @@
         <item name="android:colorBackground">@color/tagBgGray</item>
     </style>
 
+    <style name="mainTabTxt" parent="TextAppearance.AppCompat.Widget.ActionBar.Title">
+        <item name="android:textSize">10sp</item>
+    </style>
 </resources>
