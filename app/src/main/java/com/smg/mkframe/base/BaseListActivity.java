@@ -26,11 +26,16 @@ public abstract class BaseListActivity extends BaseActivity {
     protected SwipeToLoadLayout swipeLayout;
     protected RecyclerView swipe_target;
 
-    protected int page = 0;
+    protected int page = 1;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
+        getSavedInstance(savedInstanceState);
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_list);
+        setContentView(getLayoutRes());
+    }
+
+    protected int getLayoutRes(){
+        return R.layout.activity_list;
     }
 
     @Override
@@ -58,10 +63,11 @@ public abstract class BaseListActivity extends BaseActivity {
                 onRcvLoadMore();
             }
         });
-        ((LinearLayout.LayoutParams)titleBar.getLayoutParams()).setMargins(0, 0, 0, getTopMargin());
+        ((LinearLayout.LayoutParams)titleBar.getLayoutParams()).setMargins(0, 0, 0, getBottomMargin());
     }
 
-    protected int getTopMargin(){
+    protected void getSavedInstance(Bundle savedInstance){}
+    protected int getBottomMargin(){
         return DisplayUtil.dip2px(this, 10);
     }
 

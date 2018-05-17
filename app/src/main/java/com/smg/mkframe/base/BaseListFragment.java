@@ -19,6 +19,7 @@ public abstract class BaseListFragment extends BaseFragment {
     protected SwipeToLoadLayout swipeLayout;
     protected RecyclerView swipe_target;
 
+    protected int page = 1;
     @Override
     protected void setLayoutRes() {
         layoutRes = R.layout.fragment_list;

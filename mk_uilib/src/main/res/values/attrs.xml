@@ -271,6 +271,7 @@
         <attr name="titleBgColor" format="color"/>
         <attr name="titleTxt" format="string|reference"/>
         <attr name="subTxt" format="string|reference"/>
+        <attr name="backIcon" format="reference" />
         <attr name="backStyle">
             <enum name="NONE" value="0" />
             <enum name="FORK" value="1" />

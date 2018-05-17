@@ -9,7 +9,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         bar:titleBgColor="@android:color/white"
-        bar:backIcon="@mipmap/btn_back_black"
         android:layout_marginBottom="10dp"/>
 
     <include layout="@layout/fragment_list"
