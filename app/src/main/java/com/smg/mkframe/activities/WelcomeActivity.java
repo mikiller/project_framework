@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.mikiller.mkglidelib.imageloader.GlideImageLoader;
 import com.smg.mkframe.R;
@@ -15,8 +16,11 @@ import com.uilib.mxgallery.utils.GalleryMediaUtils;
 import java.io.File;
 import java.util.List;
 
-public class WelcomeActivity extends BaseActivity {
+import butterknife.BindView;
 
+public class WelcomeActivity extends BaseActivity {
+    @BindView(R.id.hello)
+    TextView hello;
     private ImageView iv_preview;
     private Button btn_gallery;
     @Override
@@ -37,6 +41,7 @@ public class WelcomeActivity extends BaseActivity {
                 startActivityForResult(intent, 1);
             }
         });
+        hello.setText(stringFromJNI());
     }
 
     @Override
@@ -60,4 +65,6 @@ public class WelcomeActivity extends BaseActivity {
                 break;
         }
     }
+
+    public native String stringFromJNI();
 }

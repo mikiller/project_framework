@@ -23,5 +23,7 @@ public class MyApplication extends Application {
 //        PlatformConfig.setQQZone("", "");
     }
 
-
+    static {
+        System.loadLibrary("native-lib");
+    }
 }

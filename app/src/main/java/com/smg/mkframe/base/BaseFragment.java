@@ -19,12 +19,12 @@ public abstract class BaseFragment extends Fragment {
     protected final String TAG = this.getClass().getSimpleName();
     protected Unbinder unbinder;
     protected int layoutRes;
-    protected boolean hasInit = false;
+    protected boolean hasInit = false, isVisible = false;
 
     @Override
     public void setUserVisibleHint(boolean isVisibleToUser) {
         super.setUserVisibleHint(isVisibleToUser);
-        if(isVisibleToUser == true && hasInit){
+        if((isVisible = isVisibleToUser) == true && hasInit){
             initData();
             hasInit = false;
         }
@@ -38,9 +38,10 @@ public abstract class BaseFragment extends Fragment {
         unbinder = ButterKnife.bind(this, view);
 
         initView();
-        if(getUserVisibleHint()){
+        if(isVisible){
             initData();
         }
+        hasInit = true;
         return view;
     }
 
@@ -53,5 +54,6 @@ public abstract class BaseFragment extends Fragment {
     public void onDestroyView() {
         super.onDestroyView();
         unbinder.unbind();
+        hasInit = false;
     }
 }
