@@ -14,7 +14,7 @@ public class MyApplication extends Application {
     public void onCreate() {
         super.onCreate();
         TCAgent.LOG_ON = true;
-        TCAgent.init(this, "B6311ABDC2C04A289DAF76D5B3E42F7E", "test");
+        TCAgent.init(this, "", "test");
         TCAgent.setReportUncaughtExceptions(true);
 
         //UMConfigure.setLogEnabled(false);
