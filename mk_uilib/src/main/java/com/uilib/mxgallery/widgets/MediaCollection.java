@@ -85,14 +85,17 @@ public class MediaCollection implements Parcelable {
         return lastModel;
     }
 
-    public List<File> getModelFiles() {
-        ArrayList<File> files = new ArrayList<>();
-        for (ItemModel model : modelSet) {
-            String path = model.getPath();
-            File file = new File(path);
-            files.add(file);
-        }
-        return files;
+//    public List<File> getModelFiles() {
+//        ArrayList<File> files = new ArrayList<>();
+//        for (ItemModel model : modelSet) {
+//            String path = model.getPath();
+//            File file = new File(path);
+//            files.add(file);
+//        }
+//        return files;
+//    }
+    public List<ItemModel> getModels(){
+        return new ArrayList<>(modelSet);
     }
 
     public void addMedia(ItemModel model) {

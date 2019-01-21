@@ -1,5 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <declare-styleable name="RichEditor">
+        <attr name="fontColor" format="color|reference"/>
+        <attr name="fontSize" format="integer" />
+        <attr name="paddingTop" format="integer" />
+        <attr name="paddingBottom" format="integer" />
+        <attr name="paddingLeft" format="integer" />
+        <attr name="paddingRight" format="integer" />
+        <attr name="editorHeight" format="integer" />
+    </declare-styleable>
+
+    <declare-styleable name="MKEditView">
+        <attr name="toolbarIcon" >
+            <flag name="BOLD" value="0x01"/>
+            <flag name="ITALIC" value="0x10" />
+            <flag name="UNDERLINE" value="0x100" />
+            <flag name="BULLET" value="0x1000"/>
+            <flag name="NUMBER" value="0x02"/>
+            <flag name="TXTSIZE" value="0x20" />
+            <flag name="TXTCOLOR" value="0x200" />
+            <flag name="LINK" value="0x2000" />
+            <flag name="IMG" value="0x4" />
+            <flag name="VIDEO" value="0x40" />
+        </attr>
+    </declare-styleable>
 
     <declare-styleable name="SpannableEditbox">
         <attr name="clickableSpan" format="boolean" />

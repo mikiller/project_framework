@@ -148,6 +148,33 @@ public enum MimeType {
         {
             add("avi");
         }
+    }),
+    MP3(0x4000, "audio/mpeg", new HashSet<String>() {
+        private static final long serialVersionUID = 5416517936685891223L;
+
+        {
+            add("mp3");
+        }
+    }),
+    WMA(0x8000, "audio/x-ms-wma", new HashSet<String>() {
+        private static final long serialVersionUID = -8915653521445897206L;
+
+        {
+            add("wma");
+        }
+    }),
+    WAV(0x10000, "audio/x-wav", new HashSet<String>(){
+        private static final long serialVersionUID = -6324927680538826030L;
+
+        {
+            add("wav");
+        }
+    }),
+    AAC(0x20000, "audio/aac", new HashSet<String>(){
+        private static final long serialVersionUID = 2957826111170089575L;
+        {
+            add("aac");
+        }
     });
 
     private final long mMimeTypeId;
@@ -189,6 +216,14 @@ public enum MimeType {
             return AVI;
         else if(typeName.equals(TS.toString()))
             return TS;
+        else if(typeName.equals(MP3.toString()))
+            return MP3;
+        else if(typeName.equals(WMA.toString()))
+            return WMA;
+        else if(typeName.equals(WAV.toString()))
+            return WAV;
+        else if(typeName.equals(AAC.toString()))
+            return AAC;
         else
             return FILE;
     }
@@ -251,6 +286,18 @@ public enum MimeType {
                 || mimeType.equals(WEBM.toString())
                 || mimeType.equals(TS.toString())
                 || mimeType.equals(AVI.toString()));
+    }
+
+    public static Set<MimeType> ofAudio(){
+        return EnumSet.of(MP3, WMA, WAV, AAC);
+    }
+
+    public static boolean isAudio(int mimeType){
+        return mimeType == (MP3.mMimeTypeId ^ WMA.mMimeTypeId ^ WAV.mMimeTypeId ^ AAC.mMimeTypeId);
+    }
+
+    public static boolean isAudio(String mimeType){
+        return mimeType != null && (mimeType.equals(MP3.toString()) || mimeType.equals(WMA.toString()) || mimeType.equals(WAV.toString()) || mimeType.equals(AAC.toString()));
     }
 
     @Override

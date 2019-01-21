@@ -54,6 +54,7 @@ public class MXGallery extends RelativeLayout implements LoaderManager.LoaderCal
     private MediaCollection mediaCollection = null;
     @NonNull
     private FragmentManager fgmtMgr;
+    private PreviewFragment fragment;
     private Loader<Cursor> contentLoader;
 
     private int mimeType = 0;
@@ -172,9 +173,10 @@ public class MXGallery extends RelativeLayout implements LoaderManager.LoaderCal
             @Override
             public void onRightClick() {
                 if(selectListener != null)
-                    selectListener.onConfirm(mediaCollection.getModelFiles());
+                    selectListener.onConfirm(mediaCollection.getModels());
             }
         });
+        GalleryLoaderUtils.initLoaderManager(getContext(), MediaLoader.LOADER_ID, this);
     }
 
     public void onSaveInstanceState(Bundle outState) {
@@ -219,7 +221,7 @@ public class MXGallery extends RelativeLayout implements LoaderManager.LoaderCal
                         itemsAdapter.notifyDataSetChanged();
                     /*else*/ if(selectListener != null) {
                         selectListener.onPreView(false);
-                        selectListener.onConfirm(mediaCollection.getModelFiles());
+                        selectListener.onConfirm(mediaCollection.getModels());
                     }
                 }
             }
@@ -228,7 +230,7 @@ public class MXGallery extends RelativeLayout implements LoaderManager.LoaderCal
             public void confirmSelectedMedia() {
                 if(selectListener != null) {
                     selectListener.onPreView(false);
-                    selectListener.onConfirm(mediaCollection.getModelFiles());
+                    selectListener.onConfirm(mediaCollection.getModels());
                 }
             }
 
@@ -250,7 +252,11 @@ public class MXGallery extends RelativeLayout implements LoaderManager.LoaderCal
         tabGroup.setTabNames(listener, names);
     }
 
-
+    public void closePreview(){
+        fgmtMgr.beginTransaction().remove(fragment).commit();
+        if(selectListener != null)
+            selectListener.onPreView(false);
+    }
 
     public void setContentLoader(Loader<Cursor> loader) {
         contentLoader = loader;
@@ -287,8 +293,6 @@ public class MXGallery extends RelativeLayout implements LoaderManager.LoaderCal
     @Override
     protected void onSizeChanged(int w, int h, int oldw, int oldh) {
         super.onSizeChanged(w, h, oldw, oldh);
-
-        GalleryLoaderUtils.initLoaderManager(getContext(), MediaLoader.LOADER_ID, this);
     }
 
     @Override

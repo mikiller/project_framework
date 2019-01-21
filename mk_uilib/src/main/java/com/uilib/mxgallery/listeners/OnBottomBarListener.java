@@ -14,5 +14,5 @@ import java.util.Set;
 
 public interface OnBottomBarListener {
     void onPreView(boolean isPreview);
-    void onConfirm(List<File> fileList);
+    void onConfirm(List<ItemModel> fileList);
 }

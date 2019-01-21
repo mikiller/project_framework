@@ -21,7 +21,7 @@ import com.mikiller.mkglidelib.imageloader.GlideImageLoader;
 import com.uilib.customdialog.CustomDialog;
 import com.uilib.mxgallery.models.ItemModel;
 import com.uilib.mxgallery.models.MimeType;
-import com.uilib.mxgallery.utils.GalleryMediaUtils;
+import com.uilib.mxgallery.utils.CameraGalleryUtils;
 import com.uilib.mxgallery.widgets.MediaCollection;
 import com.uilib.R;
 import com.uilib.mxgallery.listeners.OnMediaItemClickListener;
@@ -75,9 +75,9 @@ public class GalleryItemsAdapter extends RecyclerViewCursorAdapter<GalleryItemsA
                 @Override
                 public void onClick(View v) {
                     if(MimeType.isPic(mimeType))
-                        GalleryMediaUtils.getInstance(mContext).openSysCamera("tmp_");
+                        CameraGalleryUtils.getInstance().openSysCamera(mContext);
                     else if(MimeType.isVideo(mimeType))
-                        GalleryMediaUtils.getInstance(mContext).openSysVideo("tmp_");
+                        CameraGalleryUtils.getInstance().openSysVideo(mContext);
                     else{
                         showSelectDlg();
                     }
@@ -105,9 +105,9 @@ public class GalleryItemsAdapter extends RecyclerViewCursorAdapter<GalleryItemsA
             @Override
             public void onBtnClick(int id) {
                 if(id == R.id.btn_1)
-                    GalleryMediaUtils.getInstance(mContext).openSysCamera("tmp_");
+                    CameraGalleryUtils.getInstance().openSysCamera(mContext);
                 else if(id == R.id.btn_2)
-                    GalleryMediaUtils.getInstance(mContext).openSysVideo("tmp_");
+                    CameraGalleryUtils.getInstance().openSysVideo(mContext);
                 dlg.dismiss();
             }
         }, R.id.btn_1, R.id.btn_2, R.id.btn_3).setCustomBtnText("照片", "视频", "取消").setTitle("选择要拍摄的格式").show();

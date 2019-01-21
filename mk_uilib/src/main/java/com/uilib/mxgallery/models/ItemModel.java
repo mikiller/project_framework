@@ -40,13 +40,14 @@ public class ItemModel implements Parcelable {
     public static final long ITEM_ID_CAPTURE = -1;
     public static final String ITEM_DISPLAY_NAME_CAPTURE = "Capture";
     public final long id;
-    public final String path;
+    public String path;
     public final String mimeType;
-    public final Uri uri;
+    public Uri uri;
     public final long size;
+    public final long date;
     public final long duration; // only for video, in ms
 
-    private ItemModel(long id, String path, String mimeType, long size, long duration) {
+    public ItemModel(long id, String path, String mimeType, long size, long date, long duration) {
         this.id = id;
         this.path = path;
         this.mimeType = mimeType;
@@ -61,6 +62,17 @@ public class ItemModel implements Parcelable {
         }
         this.uri = ContentUris.withAppendedId(contentUri, id);
         this.size = size;
+        this.date = date;
+        this.duration = duration;
+    }
+
+    public ItemModel(String path, Uri uri, String mimeType, long size, long date, long duration){
+        this.id = 0;
+        this.path = path;
+        this.mimeType = mimeType;
+        this.uri = uri;
+        this.size = size;
+        this.date = date;
         this.duration = duration;
     }
 
@@ -70,6 +82,7 @@ public class ItemModel implements Parcelable {
         mimeType = source.readString();
         uri = source.readParcelable(Uri.class.getClassLoader());
         size = source.readLong();
+        date = source.readLong();
         duration = source.readLong();
     }
 
@@ -78,6 +91,7 @@ public class ItemModel implements Parcelable {
                 cursor.getString(cursor.getColumnIndex(MediaStore.MediaColumns.DATA)),
                 cursor.getString(cursor.getColumnIndex(MediaStore.MediaColumns.MIME_TYPE)),
                 cursor.getLong(cursor.getColumnIndex(MediaStore.MediaColumns.SIZE)),
+                cursor.getLong(cursor.getColumnIndex(MediaStore.MediaColumns.DATE_MODIFIED)),
                 cursor.getLong(cursor.getColumnIndex("duration")));
     }
 
@@ -93,6 +107,7 @@ public class ItemModel implements Parcelable {
         dest.writeString(mimeType);
         dest.writeParcelable(uri, 0);
         dest.writeLong(size);
+        dest.writeLong(date);
         dest.writeLong(duration);
     }
 
@@ -100,8 +115,16 @@ public class ItemModel implements Parcelable {
         return uri;
     }
 
+    public void setContentUri(Uri url){
+        this.uri = url;
+    }
+
     public String getPath(){
         return path;
+    }
+
+    public void setPath(String newPath){
+        path = newPath;
     }
 
     public boolean isCapture() {
@@ -149,6 +172,7 @@ public class ItemModel implements Parcelable {
         result = 31 * result + mimeType.hashCode();
         result = 31 * result + uri.hashCode();
         result = 31 * result + Long.valueOf(size).hashCode();
+        result = 31 * result + Long.valueOf(date).hashCode();
         result = 31 * result + Long.valueOf(duration).hashCode();
         return result;
     }

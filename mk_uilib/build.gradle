@@ -1,15 +1,15 @@
 apply plugin: 'com.android.library'
 
 android {
-    compileSdkVersion 26
-    buildToolsVersion '26.0.3'
+    compileSdkVersion rootProject.ext.compileSdkVersion
+    buildToolsVersion rootProject.ext.buildToolsVersion
 
 //    applicationId "com.uilib.spannableeditbox"
     defaultConfig {
-        minSdkVersion 16
-        targetSdkVersion 26
-        versionCode 2
-        versionName "1.1"
+        minSdkVersion rootProject.ext.minSdkVersion
+        targetSdkVersion rootProject.ext.targetSdkVersion
+        versionCode 3
+        versionName "1.2"
     }
     buildTypes {
         release {
@@ -34,11 +34,12 @@ dependencies {
     testCompile 'junit:junit:4.12'
     compile(name: 'richeditor', ext: 'aar')
     //compile(name: 'mkglidelib', ext: 'aar')
-    compile 'com.android.support:appcompat-v7:26.0.2'
-    compile 'com.android.support:design:26.0.2'
-    compile 'com.android.support:recyclerview-v7:26.0.2'
-    compile 'com.lsjwzh:materialloadingprogressbar:0.5.8-RELEASE'
-    compile 'com.googlecode.mp4parser:isoparser:1.1.22'
-    compile project(':mkglidelib')
-    compile 'com.android.support:cardview-v7:26.0.2'
+    api 'com.android.support:appcompat-v7:' + rootProject.ext.appcompatVersion
+    api 'com.android.support:design:' + rootProject.ext.appcompatVersion
+    api 'com.android.support:recyclerview-v7:' + rootProject.ext.appcompatVersion
+    api 'com.android.support:cardview-v7:' + rootProject.ext.appcompatVersion
+    implementation 'com.lsjwzh:materialloadingprogressbar:0.5.8-RELEASE'
+    implementation 'com.googlecode.mp4parser:isoparser:1.1.22'
+    api project(':mkglidelib')
+    api project(':mkokhttp')
 }

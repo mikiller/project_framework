@@ -38,31 +38,35 @@ public class MediaLoader extends CursorLoader {
     public static final int LOADER_ID = 1;
     public static Uri QUERY_URI = MediaStore.Files.getContentUri("external");
     public static String[] PROJECTION = new String[]{
-         MediaStore.Files.FileColumns._ID,
-                 MediaStore.MediaColumns.DATA,
-                 MediaStore.MediaColumns.MIME_TYPE,
-                 MediaStore.MediaColumns.SIZE,
-                 "duration"};
+            MediaStore.Files.FileColumns._ID,
+            MediaStore.MediaColumns.DATA,
+            MediaStore.MediaColumns.MIME_TYPE,
+            MediaStore.MediaColumns.SIZE,
+            MediaStore.MediaColumns.DATE_MODIFIED,
+            "duration"};
     public static String SELECTION_ALL = "(" + MediaStore.Files.FileColumns.MEDIA_TYPE + "=?"
-             + " OR " + MediaStore.Files.FileColumns.MEDIA_TYPE + "=?"
-             + " OR " + MediaStore.Files.FileColumns.MEDIA_TYPE + "=?)"
-             + " AND " + MediaStore.MediaColumns.SIZE + ">0";
-    public static String ORDER_BY = MediaStore.Files.FileColumns._ID + " DESC";
+            + " OR " + MediaStore.Files.FileColumns.MEDIA_TYPE + "=?"
+            + " OR " + MediaStore.Files.FileColumns.MEDIA_TYPE + "=?)"
+            + " AND " + MediaStore.MediaColumns.SIZE + ">0";
+    public static String ORDER_BY = MediaStore.Files.FileColumns.DATE_MODIFIED + " DESC";
 //    protected boolean mEnableCapture;
 
     private static final String SELECTION_SINGLE = MediaStore.Files.FileColumns.MEDIA_TYPE + "=? AND "
             + MediaStore.MediaColumns.SIZE + ">0";
 
-    private static final String SELECTION(int mediaType, int idCount, String bucketId){
+    private static final String SELECTION(int mediaType, int idCount, String bucketId) {
         String selection = mediaType == MediaStore.Files.FileColumns.MEDIA_TYPE_NONE ? SELECTION_ALL : SELECTION_SINGLE;
-        if(idCount > 0){
+        if (idCount > 0) {
             selection = selection.concat(" AND ").concat(MediaStore.Files.FileColumns.DATA).concat(" not in(");
-            for(int i = 0; i < idCount; i++){
+            for (int i = 0; i < idCount; i++) {
                 selection = selection.concat("?, ");
             }
             selection = selection.substring(0, selection.lastIndexOf(",")) + ")";
         }
-        if(!TextUtils.isEmpty(bucketId) && !bucketId.equals("-1"))
+        if(mediaType == MediaStore.Files.FileColumns.MEDIA_TYPE_AUDIO){
+            selection = selection.concat(" AND ").concat(MediaStore.Files.FileColumns.MIME_TYPE).concat(" in ('audio/mpeg','audio/x-ms-wma','audio/aac', 'audio/quicktime')");
+        }
+        if (!TextUtils.isEmpty(bucketId) && !bucketId.equals("-1"))
             selection = selection.concat(" AND ").concat(MediaStore.Images.Media.BUCKET_ID).concat("=?");
         Log.e("media loader", "selection: " + selection);
         return selection;
@@ -75,19 +79,19 @@ public class MediaLoader extends CursorLoader {
                         String.valueOf(MediaStore.Files.FileColumns.MEDIA_TYPE_VIDEO),
                         String.valueOf(MediaStore.Files.FileColumns.MEDIA_TYPE_AUDIO)}
                 : new String[]{String.valueOf(meidaType)};
-        if(paths == null){
+        if (paths == null) {
             args.addAll(Arrays.asList(types));
-        }else{
-            for(int i = 0; i < types.length; i++){
+        } else {
+            for (int i = 0; i < types.length; i++) {
                 args.add(types[i]);
             }
             for (int i = 0; i < paths.size(); i++) {
                 args.add(paths.get(i));
             }
         }
-        if(!TextUtils.isEmpty(bucketId) && !bucketId .equals("-1"))
+        if (!TextUtils.isEmpty(bucketId) && !bucketId.equals("-1"))
             args.add(bucketId);
-        for(String arg : args)
+        for (String arg : args)
             Log.e("media loader", "arg: " + arg);
         return args.toArray(new String[]{});
 
@@ -96,9 +100,9 @@ public class MediaLoader extends CursorLoader {
     private static final String[] SELECTION_ALL_ARGS(boolean isPic, ArrayList<Integer> ids) {
         String type = isPic ? String.valueOf(MediaStore.Files.FileColumns.MEDIA_TYPE_IMAGE) : String.valueOf(MediaStore.Files.FileColumns.MEDIA_TYPE_VIDEO);
         String[] args;
-        if(ids == null){
+        if (ids == null) {
             args = new String[]{type};
-        } else{
+        } else {
             args = new String[ids.size() + 1];
             args[0] = type;
             for (int i = 0; i < ids.size(); i++) {
@@ -108,7 +112,7 @@ public class MediaLoader extends CursorLoader {
         return args;
     }
 
-    public static CursorLoader newInstance(Context context, int mediaType, ArrayList<String> paths, String bucketId){
+    public static CursorLoader newInstance(Context context, int mediaType, ArrayList<String> paths, String bucketId) {
         return new MediaLoader(context,
                 QUERY_URI, PROJECTION,
                 SELECTION(mediaType, paths == null ? 0 : paths.size(), bucketId),
@@ -123,7 +127,7 @@ public class MediaLoader extends CursorLoader {
 //        mEnableCapture = capture;
     }
 
-    public void changeContent(){
+    public void changeContent() {
     }
 
     @Override

@@ -65,7 +65,7 @@ public class TwitterRefreshHeaderView extends SwipeRefreshHeaderLayout {
         ivArrow.clearAnimation();
         ivArrow.setVisibility(GONE);
         progressBar.setVisibility(VISIBLE);
-        tvRefresh.setText("REFRESHING");
+        tvRefresh.setText(R.string.pull_to_refresh_refreshing_label);
     }
 
     @Override
@@ -80,7 +80,7 @@ public class TwitterRefreshHeaderView extends SwipeRefreshHeaderLayout {
             progressBar.setVisibility(GONE);
             ivSuccess.setVisibility(GONE);
             if (y > mHeaderHeight) {
-                tvRefresh.setText("RELEASE TO REFRESH");
+                tvRefresh.setText(R.string.pull_to_refresh_release_label);
                 if (!rotated) {
                     ivArrow.clearAnimation();
                     ivArrow.startAnimation(rotateUp);
@@ -93,7 +93,7 @@ public class TwitterRefreshHeaderView extends SwipeRefreshHeaderLayout {
                     rotated = false;
                 }
 
-                tvRefresh.setText("SWIPE TO REFRESH");
+                tvRefresh.setText(R.string.pull_to_refresh_pull_label);
             }
         }
     }
@@ -110,7 +110,7 @@ public class TwitterRefreshHeaderView extends SwipeRefreshHeaderLayout {
         ivArrow.clearAnimation();
         ivArrow.setVisibility(GONE);
         progressBar.setVisibility(GONE);
-        tvRefresh.setText("COMPLETE");
+        tvRefresh.setText(R.string.title_finish);
     }
 
     @Override

@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <RelativeLayout
+        android:id="@+id/rl_root"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+    <com.uilib.richeditor.RichEditor xmlns:edt="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/richeditor"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        edt:paddingBottom="10"
+        edt:paddingLeft="15"
+        edt:paddingRight="15" />
+    <!--android:layout_above="@+id/ll_toolbar"-->
+
+    <TextView
+        android:id="@+id/tv_hint"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="15dp"
+        android:text="请输入正文..."
+        android:textColor="@color/editor_title_bg_line"
+        android:textSize="16sp" />
+
+    <!--<LinearLayout-->
+    <!--android:id="@+id/ll_toolbar"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:background="@color/editor_toolbar_bg"-->
+    <!--android:orientation="vertical"-->
+    <!--android:visibility="visible">-->
+
+    <!--<View-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="1px"-->
+    <!--android:background="@color/editor_toolbar_board" />-->
+
+    <!--<LinearLayout-->
+    <!--android:id="@+id/ll_btns"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:orientation="horizontal">-->
+
+    <!--<ImageView-->
+    <!--android:id="@+id/iv_img"-->
+    <!--style="@style/editor_toolbar_btn"-->
+    <!--android:src="@mipmap/insert_image" />-->
+
+    <!--<ImageView-->
+    <!--android:id="@+id/iv_bold"-->
+    <!--style="@style/editor_toolbar_btn"-->
+    <!--android:src="@mipmap/bold" />-->
+
+    <!--<ImageView-->
+    <!--android:id="@+id/iv_italic"-->
+    <!--style="@style/editor_toolbar_btn"-->
+    <!--android:src="@mipmap/italic" />-->
+
+    <!--<ImageView-->
+    <!--android:id="@+id/iv_underline"-->
+    <!--style="@style/editor_toolbar_btn"-->
+    <!--android:src="@mipmap/underline" />-->
+
+    <!--<ImageView-->
+    <!--android:id="@+id/iv_bullets"-->
+    <!--style="@style/editor_toolbar_btn"-->
+    <!--android:src="@mipmap/bullets" />-->
+
+    <!--<ImageView-->
+    <!--android:id="@+id/iv_numbers"-->
+    <!--style="@style/editor_toolbar_btn"-->
+    <!--android:src="@mipmap/numbers" />-->
+
+    <!--<ImageView-->
+    <!--android:id="@+id/iv_link"-->
+    <!--style="@style/editor_toolbar_btn"-->
+    <!--android:src="@mipmap/insert_link" />-->
+
+    <!--<ImageView-->
+    <!--android:id="@+id/iv_video"-->
+    <!--style="@style/editor_toolbar_btn"-->
+    <!--android:src="@mipmap/insert_video" />-->
+    <!--</LinearLayout>-->
+    <!--</LinearLayout>-->
+</RelativeLayout>
+</RelativeLayout>

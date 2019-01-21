@@ -33,4 +33,16 @@
     <color name="pgs_front_color">#0ca8fc</color>
     <color name="pgs_text_color">#567188</color>
     <color name="dir_list_bg">#77000000</color>
+    <color name="editor_toolbar_selector_bg">#e5e7e9</color>
+    <color name="editor_toolbar_bg">#f5f5f6</color>
+    <color name="editor_toolbar_board">#d7d7d9</color>
+    <color name="editor_title_bg_line">#cacaca</color>
+    <color name="editor_stroke">#c0c0c0</color>
+    <color name="editor_dlg_txt_blue">#0091F2</color>
+    <color name="editor_txt_black">#222222</color>
+    <color name="editor_txt_gray">#666666</color>
+    <color name="editor_txt_red">#ff4165</color>
+    <color name="editor_txt_yellow">#ffb82f</color>
+    <color name="editor_txt_blue">#4391ff</color>
+    <color name="editor_txt_green">#5dd7ae</color>
 </resources>
