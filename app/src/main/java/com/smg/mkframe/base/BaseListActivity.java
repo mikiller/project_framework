@@ -1,9 +1,6 @@
 package com.smg.mkframe.base;
 
 import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.widget.LinearLayout;
 
 import com.smg.mkframe.R;
@@ -13,6 +10,9 @@ import com.uilib.swipetoloadlayout.SwipeToLoadLayout;
 import com.uilib.titlebar.TitleBar;
 import com.uilib.utils.DisplayUtil;
 
+import androidx.annotation.Nullable;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import butterknife.BindView;
 
 /**
@@ -49,7 +49,7 @@ public abstract class BaseListActivity extends BaseActivity {
         setTitle();
 
         swipe_target = (RecyclerView) swipeLayout.getTargetView();
-        swipe_target.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
+        swipe_target.setLayoutManager(new LinearLayoutManager(this, RecyclerView.VERTICAL, false));
         setAdapter();
         swipeLayout.setOnRefreshListener(new OnRefreshListener() {
             @Override

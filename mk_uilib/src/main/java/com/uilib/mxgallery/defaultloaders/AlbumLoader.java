@@ -22,10 +22,11 @@ import android.database.MatrixCursor;
 import android.database.MergeCursor;
 import android.net.Uri;
 import android.provider.MediaStore;
-import android.support.v4.content.CursorLoader;
 
 import com.uilib.mxgallery.models.Album;
 import com.uilib.mxgallery.models.MimeType;
+
+import androidx.loader.content.CursorLoader;
 
 
 public class AlbumLoader extends CursorLoader {

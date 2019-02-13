@@ -1,17 +1,11 @@
 package com.uilib.mxgallery.widgets;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.provider.MediaStore;
-import android.support.annotation.NonNull;
-import android.support.v4.app.FragmentActivity;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.LoaderManager;
-import android.support.v4.content.Loader;
-import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.widget.RelativeLayout;
@@ -29,6 +23,14 @@ import com.uilib.mxgallery.utils.GalleryLoaderUtils;
 
 import java.util.List;
 import java.util.Set;
+
+import androidx.annotation.NonNull;
+import androidx.fragment.app.FragmentActivity;
+import androidx.fragment.app.FragmentManager;
+import androidx.loader.app.LoaderManager;
+import androidx.loader.content.Loader;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 /**
  * Created by Mikiller on 2017/5/11.
@@ -95,8 +97,7 @@ public class MXGallery extends RelativeLayout implements LoaderManager.LoaderCal
             tabGroup.setVisibility(ta.getBoolean(R.styleable.MXGallery_needTab, true) ? VISIBLE : GONE);
             ta.recycle();
         }
-
-        fgmtMgr = ((FragmentActivity) getContext()).getSupportFragmentManager();
+        fgmtMgr = ((FragmentActivity)getContext()).getSupportFragmentManager();
     }
 
     public void setColumnNum(int num){

@@ -4,18 +4,18 @@ import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Canvas;
 import android.graphics.Paint;
-import android.support.design.widget.FloatingActionButton;
 import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.view.View;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.uilib.R;
 import com.uilib.utils.DisplayUtil;
 
 /**
  * Created by Mikiller on 2016/8/12.
  */
-public class MXFloatActButton extends FloatingActionButton{
+public class MXFloatActButton extends FloatingActionButton {
     private final int LEFT_TOP = 0, RIGHT_TOP = 1, LEFT_BOTTOM = 2, RIGHT_BOTTOM = 3;
 
     private String srcText;

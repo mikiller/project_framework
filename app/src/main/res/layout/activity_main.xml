@@ -8,7 +8,7 @@
     android:fitsSystemWindows="true"
     tools:context="com.smg.mkframe.activities.MainActivity">
 
-    <android.support.design.widget.TabLayout
+    <com.google.android.material.tabs.TabLayout
         android:id="@+id/mainTab"
         android:layout_width="match_parent"
         android:layout_height="50dp"
@@ -18,7 +18,7 @@
         tab:tabSelectedTextColor="@color/colorPrimary"
         tab:tabTextAppearance="@style/mainTabTxt"/>
 
-    <android.support.v4.view.ViewPager
+    <androidx.viewpager.widget.ViewPager
         android:id="@+id/vp_main"
         android:layout_width="match_parent"
         android:layout_height="match_parent"

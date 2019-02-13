@@ -1,6 +1,5 @@
 package com.netlib.mkokhttp;
 
-import android.support.annotation.Nullable;
 import android.util.Log;
 
 import com.google.gson.Gson;

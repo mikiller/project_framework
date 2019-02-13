@@ -1,13 +1,14 @@
 package com.smg.mkframe.adapters;
 
 import android.content.Intent;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentStatePagerAdapter;
 
 import com.smg.mkframe.base.BaseFragment;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentStatePagerAdapter;
 
 /**
  * Created by Mikiller on 2017/3/15.

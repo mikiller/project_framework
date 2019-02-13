@@ -2,7 +2,6 @@ package com.uilib.richeditor;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.support.annotation.Nullable;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,6 +11,8 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 
 import com.uilib.R;
+
+import androidx.annotation.Nullable;
 
 /**
  * Created by Mikiller on 2018/8/22.

@@ -3,8 +3,6 @@ package com.uilib.mxgallery.widgets;
 import android.animation.ValueAnimator;
 import android.content.Context;
 import android.database.Cursor;
-import android.support.v4.app.FragmentActivity;
-import android.support.v4.app.LoaderManager;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.LayoutInflater;

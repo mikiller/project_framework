@@ -1,13 +1,11 @@
 package com.smg.mkframe.base;
-
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-
 import com.smg.mkframe.R;
 import com.uilib.swipetoloadlayout.OnLoadMoreListener;
 import com.uilib.swipetoloadlayout.OnRefreshListener;
 import com.uilib.swipetoloadlayout.SwipeToLoadLayout;
 
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import butterknife.BindView;
 
 /**
@@ -46,7 +44,7 @@ public abstract class BaseListFragment extends BaseFragment {
     }
 
     protected RecyclerView.LayoutManager getRcvLayoutMgr(){
-        return new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
+        return new LinearLayoutManager(getActivity(), RecyclerView.VERTICAL, false);
     }
 
     protected abstract void setAdapter();

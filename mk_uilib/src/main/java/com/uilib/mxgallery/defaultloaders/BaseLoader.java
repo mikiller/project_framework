@@ -2,7 +2,8 @@ package com.uilib.mxgallery.defaultloaders;
 
 import android.content.Context;
 import android.net.Uri;
-import android.support.v4.content.CursorLoader;
+
+import androidx.loader.content.CursorLoader;
 
 /**
  * Created by Mikiller on 2017/5/17.

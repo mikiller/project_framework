@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#00befa</color>
+    <color name="colorPrimary">#41b48c</color>
     <color name="colorPrimaryDark">@android:color/transparent</color>
-    <color name="colorPrimaryLight">#a0d2f5</color>
-    <color name="colorAccent">#519fff</color>
+    <color name="colorPrimaryLight">#8dd7b2</color>
+    <color name="colorAccent">#303030</color>
     <color name="edit_color">#000000</color>
     <color name="toolbarColor">#f0faff</color>
     <color name="mask">#b4333333</color>
@@ -11,7 +11,7 @@
     <color name="tagBgBlue">#2600bcf7</color>
     <color name="tagBgGray">#c8c8c8</color>
     <color name="rbtnSelectGray">#585858</color>
-    <color name="sliptLine">#dcdcdc</color>
+    <color name="sliptLine">#dddfe7</color>
     <color name="hintTxt">#8c8c8c</color>
 
     <color name="google_blue">#4285F4</color>
@@ -45,4 +45,7 @@
     <color name="editor_txt_yellow">#ffb82f</color>
     <color name="editor_txt_blue">#4391ff</color>
     <color name="editor_txt_green">#5dd7ae</color>
+
+    <color name="dusk">#5c6185</color>
+    <color name="red_tip">#ff555a</color>
 </resources>

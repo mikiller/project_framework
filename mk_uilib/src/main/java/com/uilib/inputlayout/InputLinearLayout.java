@@ -14,6 +14,7 @@ import android.widget.LinearLayout;
  */
 public class InputLinearLayout extends LinearLayout{
     private KeyboardStateListener listener;
+    private int keyboardHeight = 100;
 
     public InputLinearLayout(Context context) {
         super(context);
@@ -39,7 +40,7 @@ public class InputLinearLayout extends LinearLayout{
         super.onDraw(canvas);
         if (isKeyboardShown(this.getRootView())) {
             if(listener != null){
-                listener.onKeyboardShown();
+                listener.onKeyboardShown(keyboardHeight);
             }
         } else {
             if(listener != null)
@@ -48,11 +49,11 @@ public class InputLinearLayout extends LinearLayout{
     }
 
     private boolean isKeyboardShown(View rootView) {
-        final int keyboardHeight = 100;
+        final int height = 100;
         Rect rect = new Rect();
         rootView.getWindowVisibleDisplayFrame(rect);
         DisplayMetrics dm = rootView.getResources().getDisplayMetrics();
         int hx = rootView.getBottom() - rect.bottom;
-        return hx > keyboardHeight * dm.density;
+        return (keyboardHeight = hx) > height * dm.density;
     }
 }

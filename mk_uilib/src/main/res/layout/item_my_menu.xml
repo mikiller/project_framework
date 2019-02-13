@@ -2,9 +2,9 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/menu_bg"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="match_parent"
     android:paddingTop="15dp"
-    android:paddingLeft="15dp"
+    android:paddingLeft="20dp"
     android:background="@drawable/selector_menuitem">
 
     <ImageView
@@ -12,42 +12,48 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
-        android:layout_marginRight="9dp"/>
+        android:layout_marginRight="15dp"/>
 
     <TextView
         android:id="@+id/tv_menu_name"
         style="@style/nomal_text_style"
         android:layout_toRightOf="@+id/iv_menu_icon"
-        android:layout_marginBottom="14dp"
-        android:layout_marginRight="15dp"
         android:layout_centerVertical="true" />
+
+    <TextView
+        android:id="@+id/iv_notify"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/shape_tip"
+        android:paddingLeft="4dp"
+        android:paddingRight="4dp"
+        android:paddingTop="1dp"
+        android:paddingBottom="1dp"
+        android:layout_toRightOf="@id/tv_menu_name"
+        android:layout_marginLeft="5dp"
+        android:layout_centerVertical="true"
+        android:textColor="@android:color/white"
+        android:textSize="9sp"
+        android:gravity="center"
+        android:visibility="gone"/>
 
     <ImageView
         android:id="@+id/iv_next"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@mipmap/next"
-        android:layout_marginRight="15dp"
+        android:src="@mipmap/ic_arrow_gray"
+        android:layout_marginRight="20dp"
         android:layout_marginLeft="10dp"
         android:layout_alignParentRight="true"
         android:layout_centerVertical="true"
         android:visibility="invisible"/>
-
-    <View
-        android:id="@+id/iv_notify"
-        android:layout_width="30px"
-        android:layout_height="30px"
-        android:background="@drawable/shape_notify_redpoint"
-        android:layout_toLeftOf="@+id/iv_next"
-        android:layout_centerVertical="true"
-        android:visibility="gone"/>
 
     <TextView
         android:id="@+id/tv_info"
         style="@style/hint_text_style"
         android:visibility="visible"
         android:layout_toLeftOf="@+id/iv_next"
-        android:layout_toRightOf="@+id/tv_menu_name"
+        android:layout_toRightOf="@+id/iv_notify"
         android:layout_centerVertical="true"
         android:gravity="right"
         android:lines="1"
@@ -58,6 +64,5 @@
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:background="@color/sliptLine"
-        android:layout_below="@+id/tv_menu_name"
-        android:layout_alignLeft="@+id/iv_menu_icon"/>
+        android:layout_alignParentBottom="true"/>
 </RelativeLayout>

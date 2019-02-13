@@ -2,13 +2,14 @@ package com.smg.mkframe.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.TabLayout;
-import android.support.v4.view.ViewPager;
 
+import com.google.android.material.tabs.TabLayout;
 import com.smg.mkframe.R;
 import com.smg.mkframe.adapters.MainFragmentAdapter;
 import com.smg.mkframe.base.BaseActivity;
 
+import androidx.fragment.app.FragmentManager;
+import androidx.viewpager.widget.ViewPager;
 import butterknife.BindView;
 
 public class MainActivity extends BaseActivity {

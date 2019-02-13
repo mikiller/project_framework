@@ -20,7 +20,6 @@ import android.content.Context;
 import android.database.Cursor;
 import android.net.Uri;
 import android.provider.MediaStore;
-import android.support.v4.content.CursorLoader;
 import android.text.TextUtils;
 import android.util.Log;
 
@@ -29,6 +28,8 @@ import com.uilib.mxgallery.models.Album;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+
+import androidx.loader.content.CursorLoader;
 
 
 /**

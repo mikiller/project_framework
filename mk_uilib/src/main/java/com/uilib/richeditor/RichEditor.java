@@ -499,7 +499,7 @@ public class RichEditor extends WebView {
             }
         }
 
-        @android.support.annotation.RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
+        @androidx.annotation.RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
         @Override
         public boolean shouldOverrideUrlLoading(WebView view, WebResourceRequest request) {
             Uri url = request.getUrl();

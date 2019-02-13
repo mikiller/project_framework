@@ -3,8 +3,6 @@ package com.uilib.mxgallery.adapters;
 import android.content.Context;
 import android.database.Cursor;
 import android.os.Build;
-import android.support.v7.widget.CardView;
-import android.support.v7.widget.RecyclerView;
 import android.text.format.DateUtils;
 import android.util.Size;
 import android.view.LayoutInflater;
@@ -25,6 +23,9 @@ import com.uilib.mxgallery.utils.CameraGalleryUtils;
 import com.uilib.mxgallery.widgets.MediaCollection;
 import com.uilib.R;
 import com.uilib.mxgallery.listeners.OnMediaItemClickListener;
+
+import androidx.cardview.widget.CardView;
+import androidx.recyclerview.widget.RecyclerView;
 
 /**
  * Created by Mikiller on 2017/5/11.
@@ -88,9 +89,11 @@ public class GalleryItemsAdapter extends RecyclerViewCursorAdapter<GalleryItemsA
             holder.setItemType(false);
             ItemModel model = ItemModel.valueOf(cursor);
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                GlideImageLoader.getInstance().loadLocalImage(mContext, model.getContentUri(), R.mipmap.placeholder, new Size(itemSize, itemSize), holder.iv_img);
+//                GlideImageLoader.getInstance().loadLocalImage(mContext, model.getContentUri(), R.mipmap.placeholder, new Size(itemSize, itemSize), holder.iv_img);
+                GlideImageLoader.getInstance().loadImage(mContext, model.getPath(), R.mipmap.placeholder, new Size(itemSize, itemSize), holder.iv_img);
             } else {
-                GlideImageLoader.getInstance().loadLocalImage(mContext, model.getContentUri(), new int[]{itemSize, itemSize}, R.mipmap.placeholder, holder.iv_img);
+//                GlideImageLoader.getInstance().loadLocalImage(mContext, model.getContentUri(), new int[]{itemSize, itemSize}, R.mipmap.placeholder, holder.iv_img);
+                GlideImageLoader.getInstance().loadImage(mContext, model.getPath(), R.mipmap.placeholder, new int[]{itemSize, itemSize}, holder.iv_img);
             }
 
             holder.tv_time.setText(DateUtils.formatElapsedTime(model.duration / 1000));

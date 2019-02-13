@@ -24,7 +24,7 @@ public class MyMenuItem extends RelativeLayout {
     private View bottom_line;
     public TextView tv_info;
     private ImageView iv_next;
-    private View iv_notify;
+    private TextView iv_notify;
 
     private Drawable menuIcon;
     private String menuName;
@@ -137,11 +137,12 @@ public class MyMenuItem extends RelativeLayout {
         tv_info.setText(text);
     }
 
-    public void setNeedNotify(final boolean isNeed){
+    public void setNotify(final int notify){
         iv_notify.post(new Runnable() {
             @Override
             public void run() {
-                iv_notify.setVisibility(isNeed ? VISIBLE : GONE);
+                iv_notify.setText(String.valueOf(notify));
+                iv_notify.setVisibility(notify > 0 ? VISIBLE : GONE);
             }
         });
 

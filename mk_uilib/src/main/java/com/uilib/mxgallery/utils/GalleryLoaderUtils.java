@@ -6,13 +6,13 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.os.Build;
 import android.provider.MediaStore;
-import android.support.v4.app.FragmentActivity;
-import android.support.v4.app.LoaderManager;
-import android.support.v4.content.FileProvider;
-import android.support.v4.content.Loader;
 import android.webkit.MimeTypeMap;
 
 import java.io.File;
+
+import androidx.core.content.FileProvider;
+import androidx.fragment.app.FragmentActivity;
+import androidx.loader.app.LoaderManager;
 
 /**
  * Created by Mikiller on 2017/5/11.
@@ -57,7 +57,7 @@ public class GalleryLoaderUtils {
 
     public static void initLoaderManager(Context context, int id, LoaderManager.LoaderCallbacks<Cursor> callback){
         if(mLoaderManager == null)
-            mLoaderManager = ((FragmentActivity) context).getSupportLoaderManager();
+            mLoaderManager = LoaderManager.getInstance((FragmentActivity) context);
         mLoaderManager.restartLoader(id, null, callback);
     }
 

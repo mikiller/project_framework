@@ -3,7 +3,6 @@ package com.uilib.mxgallery.adapters;
 import android.content.Context;
 import android.database.Cursor;
 import android.net.Uri;
-import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,6 +15,8 @@ import com.uilib.mxgallery.models.Album;
 import com.uilib.utils.DisplayUtil;
 
 import java.io.File;
+
+import androidx.recyclerview.widget.RecyclerView;
 
 /**
  * Created by Mikiller on 2017/9/11.
@@ -46,7 +47,8 @@ public class DirRcvAdapter extends RecyclerViewCursorAdapter<DirRcvAdapter.Holde
     protected void onBindViewHolder(final Holder holder, Cursor cursor) {
         final Album album = Album.valueOf(cursor);
 
-        GlideImageLoader.getInstance().loadLocalImage(mContext, Uri.fromFile(new File(album.getCoverPath())), coverSize, R.mipmap.placeholder, holder.iv_img);
+//        GlideImageLoader.getInstance().loadLocalImage(mContext, Uri.fromFile(new File(album.getCoverPath())), coverSize, R.mipmap.placeholder, holder.iv_img);
+        GlideImageLoader.getInstance().loadImage(mContext, album.getCoverPath(), R.mipmap.placeholder, coverSize, holder.iv_img);
         holder.tv_dirName.setText(album.getDisplayName(mContext.getString(mContext.getResources().getIdentifier("tab_all", "string", mContext.getPackageName()))));
         holder.tv_count.setText(String.valueOf(album.getCount()));
         holder.itemView.setOnClickListener(new View.OnClickListener() {

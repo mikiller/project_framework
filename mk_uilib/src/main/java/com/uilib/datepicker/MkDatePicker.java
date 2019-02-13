@@ -2,7 +2,6 @@ package com.uilib.datepicker;
 
 import android.content.Context;
 import android.graphics.drawable.ColorDrawable;
-import android.support.annotation.Nullable;
 import android.util.AttributeSet;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
@@ -14,6 +13,8 @@ import com.uilib.R;
 import java.lang.reflect.Field;
 import java.util.Calendar;
 import java.util.Date;
+
+import androidx.annotation.Nullable;
 
 /**
  * Created by Mikiller on 2018/4/2.

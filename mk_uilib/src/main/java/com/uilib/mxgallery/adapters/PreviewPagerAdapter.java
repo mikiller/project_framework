@@ -19,7 +19,6 @@ import android.content.Context;
 import android.graphics.PorterDuff;
 import android.media.MediaPlayer;
 import android.net.Uri;
-import android.support.v4.view.PagerAdapter;
 import android.text.TextUtils;
 import android.text.format.DateUtils;
 import android.util.Log;
@@ -48,6 +47,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
+
+import androidx.viewpager.widget.PagerAdapter;
 
 public class PreviewPagerAdapter extends PagerAdapter {
     private Context mContext;
@@ -152,7 +153,8 @@ public class PreviewPagerAdapter extends PagerAdapter {
         }
 
         public void setImgPreview(Uri uri) {
-            GlideImageLoader.getInstance().loadLocalImage(mContext, uri, R.mipmap.placeholder, iv_preview);
+//            GlideImageLoader.getInstance().loadLocalImage(mContext, uri, R.mipmap.placeholder, iv_preview);
+            GlideImageLoader.getInstance().loadImage(mContext, uri.getPath(), R.mipmap.placeholder, iv_preview);
         }
 
         public void setVideoPreview(final ItemModel item) {

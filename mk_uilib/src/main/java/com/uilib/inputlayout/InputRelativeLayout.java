@@ -13,6 +13,7 @@ import android.widget.RelativeLayout;
  */
 public class InputRelativeLayout extends RelativeLayout {
     private KeyboardStateListener listener;
+    private int keyboardHeight = 100;
 
     public InputRelativeLayout(Context context) {
         super(context);
@@ -38,7 +39,7 @@ public class InputRelativeLayout extends RelativeLayout {
         super.onDraw(canvas);
         if (isKeyboardShown(this.getRootView())) {
             if(listener != null){
-                listener.onKeyboardShown();
+                listener.onKeyboardShown(keyboardHeight);
             }
         } else {
             if(listener != null)
@@ -47,11 +48,11 @@ public class InputRelativeLayout extends RelativeLayout {
     }
 
     private boolean isKeyboardShown(View rootView) {
-        final int keyboardHeight = 100;
+        final int height = 100;
         Rect rect = new Rect();
         rootView.getWindowVisibleDisplayFrame(rect);
         DisplayMetrics dm = rootView.getResources().getDisplayMetrics();
         int hx = rootView.getBottom() - rect.bottom;
-        return hx > keyboardHeight * dm.density;
+        return (keyboardHeight = hx) > height * dm.density;
     }
 }

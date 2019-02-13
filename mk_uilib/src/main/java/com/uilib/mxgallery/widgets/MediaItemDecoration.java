@@ -16,9 +16,9 @@
 package com.uilib.mxgallery.widgets;
 
 import android.graphics.Rect;
-import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.View;
+
+import androidx.recyclerview.widget.RecyclerView;
 
 public class MediaItemDecoration extends RecyclerView.ItemDecoration {
 

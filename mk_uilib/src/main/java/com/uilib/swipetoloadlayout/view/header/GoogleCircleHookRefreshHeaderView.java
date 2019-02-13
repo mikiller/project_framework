@@ -3,7 +3,6 @@ package com.uilib.swipetoloadlayout.view.header;
 import android.annotation.TargetApi;
 import android.content.Context;
 import android.os.Build;
-import android.support.v4.view.ViewCompat;
 import android.util.AttributeSet;
 import android.widget.FrameLayout;
 
@@ -11,6 +10,8 @@ import com.uilib.R;
 import com.uilib.swipetoloadlayout.SwipeRefreshTrigger;
 import com.uilib.swipetoloadlayout.SwipeTrigger;
 import com.uilib.swipetoloadlayout.view.GoogleCircleProgressView;
+
+import androidx.core.view.ViewCompat;
 
 
 /**

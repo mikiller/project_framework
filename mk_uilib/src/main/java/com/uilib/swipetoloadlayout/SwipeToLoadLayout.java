@@ -2,8 +2,6 @@ package com.uilib.swipetoloadlayout;
 
 import android.content.Context;
 import android.content.res.TypedArray;
-import android.support.v4.view.MotionEventCompat;
-import android.support.v4.view.ViewCompat;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -15,6 +13,9 @@ import android.widget.AbsListView;
 import android.widget.Scroller;
 
 import com.uilib.R;
+
+import androidx.core.view.MotionEventCompat;
+import androidx.core.view.ViewCompat;
 
 /**
  * Created by Aspsine on 2015/8/13.

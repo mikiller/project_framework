@@ -19,7 +19,7 @@
         android:theme="@style/MyTheme">
 
         <provider
-            android:name="android.support.v4.content.FileProvider"
+            android:name="androidx.core.content.FileProvider"
             android:authorities="${applicationId}.file_provider"
             android:grantUriPermissions="true"
             android:exported="false"

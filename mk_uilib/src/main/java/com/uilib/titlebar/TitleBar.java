@@ -2,6 +2,9 @@ package com.uilib.titlebar;
 
 import android.content.Context;
 import android.content.res.TypedArray;
+import android.graphics.Color;
+import android.graphics.Rect;
+import android.graphics.drawable.Drawable;
 import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
@@ -23,17 +26,12 @@ import com.uilib.utils.AnimUtils;
  */
 
 public class TitleBar extends RelativeLayout {
-    public final static int FORK = 1, ARROW = 2, NORMAL = 0, MENU = 1, HEADER = 2, NONE = 0, IMG = 1, TXT = 2;
     private View view_bg;
     private ImageButton btn_back, btn_more;
-    private TextView tv_menu, tv_act_title, tv_act_sure;
-    private LinearLayout ll_menu, ll_title;
-    private ImageView iv_menu;
-    private SelectableRoundedImageView iv_header;
-
+    private TextView tv_act_title, tv_act_sure;
+    private int txtColor;
+    private Drawable subIcon;
     private TitleListener listener;
-
-    private int backStyle = ARROW, titleStyle = NORMAL, subStyle = NONE;
 
     public TitleBar(Context context) {
         this(context, null);
@@ -53,30 +51,17 @@ public class TitleBar extends RelativeLayout {
         view_bg = findViewById(R.id.view_bg);
         btn_back = (ImageButton) findViewById(R.id.btn_back);
         btn_more = (ImageButton) findViewById(R.id.btn_more);
-        tv_menu = (TextView) findViewById(R.id.tv_menu);
         tv_act_title = (TextView) findViewById(R.id.tv_act_title);
         tv_act_sure = (TextView) findViewById(R.id.tv_act_sure);
-        ll_menu = (LinearLayout) findViewById(R.id.ll_menu);
-        ll_title = (LinearLayout) findViewById(R.id.ll_title);
-        iv_menu = (ImageView) findViewById(R.id.iv_menu);
-        iv_header = (SelectableRoundedImageView) findViewById(R.id.iv_header);
 
         TypedArray ta = context.obtainStyledAttributes(attrs, R.styleable.TitleBar);
         if(ta != null){
             setBgColor(ta.getColor(R.styleable.TitleBar_titleBgColor, getResources().getColor(R.color.colorPrimary)));
-//            view_bg.setBackgroundColor(ta.getColor(R.styleable.TitleBar_titleBgColor, getResources().getColor(R.color.colorPrimary)));
-            backStyle = ta.getInt(R.styleable.TitleBar_backStyle, ARROW);
-            btn_back.setVisibility(backStyle == NONE ? GONE : VISIBLE);
-            btn_back.setImageResource(backStyle == ARROW ? android.R.drawable.ic_menu_revert : android.R.drawable.ic_menu_close_clear_cancel);
-            setSubStyle(ta.getInt(R.styleable.TitleBar_subStyle, NONE));
-            titleStyle = ta.getInt(R.styleable.TitleBar_titleStyle, NORMAL);
-            ll_menu.setVisibility(titleStyle == MENU ? VISIBLE : GONE);
-            ll_title.setVisibility(titleStyle == MENU ? GONE : VISIBLE);
-            iv_header.setVisibility(titleStyle == HEADER ? VISIBLE : GONE);
-
+            setTxtColor(ta.getColor(R.styleable.TitleBar_barTxtColor, Color.WHITE));
             setTitle(ta.getString(R.styleable.TitleBar_titleTxt));
             setSubTxt(ta.getString(R.styleable.TitleBar_subTxt));
-
+            setSubIcon(ta.getDrawable(R.styleable.TitleBar_subIcon));
+            setSubImg(ta.getResourceId(R.styleable.TitleBar_subImg, NO_ID));
             ta.recycle();
         }
 
@@ -103,19 +88,13 @@ public class TitleBar extends RelativeLayout {
                     listener.onSubClicked();
             }
         });
+    }
 
-        ll_menu.setOnClickListener(new OnClickListener() {
-            float fromRotat = iv_menu.getRotation(), toRotat = (fromRotat + 180) % 360;
-            @Override
-            public void onClick(View v) {
-                AnimUtils.startObjectAnim(iv_menu, "rotation", fromRotat, toRotat, 500);
-                if(listener != null)
-                    listener.onMenuChecked(fromRotat < toRotat);
-                float tmp = fromRotat;
-                fromRotat = toRotat;
-                toRotat = tmp;
-            }
-        });
+    public void setTxtColor(int color){
+        txtColor = color;
+        btn_back.setImageResource(color == Color.WHITE ? R.mipmap.ic_back_white : R.mipmap.ic_back_black);
+        tv_act_title.setTextColor(color);
+        tv_act_sure.setTextColor(color);
     }
 
     public void setTitle(String title){
@@ -123,16 +102,17 @@ public class TitleBar extends RelativeLayout {
             tv_act_title.setText(title);
     }
 
-    public void setSubStyle(int style){
-        subStyle = style;
-        btn_more.setVisibility(subStyle == IMG ? VISIBLE : GONE);
-        tv_act_sure.setVisibility(subStyle == TXT ? VISIBLE : GONE);
-
-    }
-
     public void setSubTxt(String subTxt){
         if(!TextUtils.isEmpty(subTxt))
             tv_act_sure.setText(subTxt);
+    }
+
+    public void setSubIcon(Drawable drawable){
+        if(drawable != null){
+            subIcon = drawable;
+            subIcon.setBounds(new Rect(0,0, drawable.getMinimumWidth(), drawable.getMinimumHeight()));
+            tv_act_sure.setCompoundDrawables(subIcon, null, null, null);
+        }
     }
 
     public void setBackImg(int resId){
@@ -140,15 +120,16 @@ public class TitleBar extends RelativeLayout {
     }
 
     public void setSubImg(int resId){
-        btn_more.setImageResource(resId);
+        if(resId != NO_ID) {
+            btn_more.setImageResource(resId);
+            btn_more.setVisibility(VISIBLE);
+        }else{
+            btn_more.setVisibility(GONE);
+        }
     }
 
     public void setSubTxtEnabled(boolean enabled){
         tv_act_sure.setEnabled(enabled);
-    }
-
-    public void setHeader(String path){
-        GlideImageLoader.getInstance().loadImage(getContext(), path, R.mipmap.ic_launcher, iv_header, 0);
     }
 
     public void setBgColor(int color){
@@ -171,18 +152,9 @@ public class TitleBar extends RelativeLayout {
         this.listener = listener;
     }
 
-    public void callMenuCheck(){
-        ll_menu.performClick();
-    }
-
-    public void setMenu(String name){
-        tv_menu.setText(name);
-    }
-
     public static abstract class TitleListener{
         protected void onBackClicked(){}
         protected void onSubClicked(){}
         protected void onMoreClicked(){}
-        protected void onMenuChecked(boolean isChecked){}
     }
 }
